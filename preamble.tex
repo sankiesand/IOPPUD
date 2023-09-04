@@ -1,0 +1,52 @@
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{todonotes}
+\usepackage[notion, quotation, silent]{knowledge}
+%remove silent to have knowledge warnings
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{xspace}
+\usepackage{tikz}
+%\usepackage{array}
+%\usepackage{changepage}
+\usepackage{enumitem}
+\usepackage[capitalise]{cleveref}
+\usepackage{cite}
+
+
+
+\usetikzlibrary{arrows,calc,automata,shapes,positioning}
+\tikzset{AUT style/.style={>=angle 60,initial text= ,every edge/.append,every state/.style={minimum size=20,inner sep=2}}}
+
+%%% Basic Math
+
+\newcommand{\nats}{\mathbb{N}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\powerset}[1]{2^{#1}}
+\newcommand{\step}[1]{\xrightarrow{#1}}
+\newcommand{\size}[1]{|#1|}
+\newcommand{\nset}[2]{\{#1,\dots,#2\}} %interval of natural numbers
+
+%%% Complexity classes
+
+\newcommand{\poly}{\text{\sc{P}}\xspace}
+\newcommand{\conp}{\textsc{coNP}\xspace}
+\newcommand{\pspace}{\text{\sc{PSpace}}\xspace}
+\newcommand{\expt}{\textsc{ExpTime}\xspace}
+\newcommand{\nexpt}{\textsc{NExpTime}\xspace}
+\newcommand{\exps}{\textsc{ExpSpace}\xspace}
+
+
+%%% Genral definition
+\newcommand{\prot}{\mathcal{P}} %protocol
+\newcommand{\form}{\mathbf{f}}
+\newcommand{\config}{\gamma}
+\newcommand{\run}{\rho}
+
+\newcommand{\formapprox}[2]{\overline{#1}^{#2}}
+\newcommand{\configapprox}[3]{\overline{#1}^{#2, #3}}
+
+\newcommand{\FormApproxSet}[2]{\mathbf{FA}_{#1}^{#2}}

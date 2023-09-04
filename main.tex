@@ -18,7 +18,7 @@
 
 \bibliographystyle{plainurl}% the mandatory bibstyle
 
-\title{Input/Output Population Protocols with Unordered Data}
+\title{Immediate Observation Population Protocols with Unordered Data}
 
 \titlerunning{IOPPUD} %TODO optional, please use if title is longer than one line
 
@@ -102,15 +102,13 @@
 
 
 
-
-% just a first idea
-
+\input{preamble}
 
 
 \begin{document}
 	
 	\maketitle
-
+	
 	
 	\begin{abstract}
 		We study IOPPUDs.
@@ -120,11 +118,43 @@
 	
 	\section{Definitions}
 	
+	\begin{definition}
+		A \emph{population protocol with unordered data} is a tuple $(Q, \delta, I, O)$ with $Q$ a finite set of states,
+		$\Delta \subseteq Q^2 \times \set{=, \neq} \times Q^2$ a set of transitions,
+		$I \subseteq Q$ a set of initial states, and
+		$O : Q \to \set{\top, \bot}$ an output function.
+		
+		Here we are interested in \emph{immediate observation population protocols with unordered data} (IOPPUD), which is the subclass of protocols in which every transition is of the form $(q_1, q_2) \xrightarrow{\sim} (q_1, q_3)$.
+	\end{definition}
+	
 	
 	
 	\section{Equivalence relation and bounding lemmas}
 	
-	\section{Game interpretation}
+	We define the $n$-approximation of a form $\form$ as the vector $\formapprox{\form}{n} : Q \to \nset{0}{n}$ such that for all $q\in Q$, $\formapprox{\form}{n}(q)=\min(\form(q),n)$.
+	
+	We denote the set of all \textbf{non-zero} $n$-approximations over $Q$ by $\FormApproxSet{Q}{n}$
+	
+	Similarly, we define the $(n,M)$-approximation of a configuration $\config$ as the vector $\configapprox{\config}{n}{M} : \FormApproxSet{Q}{n} \to \nset{0}{M}$ such that for all $v\in \FormApproxSet{Q}{n}$,
+	$\configapprox{\config}{n}{M}(v) = \min(\size{\set{d \in \nats \mid \formapprox{\config(d)}{n} = v}},M)$
+	
+	
+	For all $n, M \in \nats$ we define the following equivalence relation on configurations: 
+	For all $\gamma_1, \gamma_2$, we have $\gamma_1 \equiv_{n,M} \gamma_2$ if and only if $\configapprox{\config_1}{n}{M} = \configapprox{\config_2}{n}{M}$.
+	
+	\begin{lemma}
+		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists another run $\run' : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \nats$, at most $\size{Q}^3$ agents with data $d$ are observed.
+	\end{lemma}
+	
+	\begin{lemma}
+		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists another run $\run' : \config_1 \xrightarrow{*} \config_2$ such that at most $\size{Q}^{3\size{Q}^3}$ data $d$ are externally observed.
+	\end{lemma}
+
+	\begin{lemma}
+		For all $n, M \in \nats$, for all configurations $\config_1, \config_2, \config_1'$, if there is a run $\run : \config_1 \xrightarrow{*} \config_2$ and $\config_1 \equiv_{n\size{Q}+\size{Q}^3,M(n\size{Q}+\size{Q}^3)+\size{Q}^{3\size{Q}^3}} \config'_1$ then there exists $\config'_2$ such that $\config'_2 \equiv_{n,M} \config_2$ and there is a run $\run' : \config_1' \xrightarrow{*} \config_2'$.
+	\end{lemma}
+	
+	\section{Logic or game interpretation (bounding quantifiers)}
 	
 	\section{Complexity}
 	
