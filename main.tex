@@ -130,12 +130,12 @@
 	
 	We fix an infinite data domain $\Dataset$ and an infinite set of agents $\Agentset$. We could take them to be $\nats$, but this could cause some confusion with the other uses of $\nats$ in the definitions.
 	
-	A \emph{configuration} is a function $\config$ from $\Agentset$ to $Q \times \Dataset \cup \set{\bot}$.
+	A \emph{configuration} is a function $\config$ from $\Agentset$ to $Q \times \Dataset \cup \set{\bot}$. The set of all configurations is written $\configset$.
 	
 	A \emph{step} $\config_1 \step{\sim}{a}{a_o} \config_2$ with $\config_1, \config_2 \in \configset$, $\sim \in \set{=, \neq}$ and $a, a_o \in \Agentset$ is defined when there exists  $\delta = q_1 \trans{q}{\sim} q_2 \in \Delta$ and $d, d_o \in \Dataset$ such that $\config_1(a) = (q_1, d)$, $\config_2(a) = (q_2, d)$ and $\config_1(a_o) = \config_2(a_o) = (q, d_o)$ and $\config_1(a') = \config_2(a')$ for all $a' \neq a$, and $d \sim d_o$.
 	We say that agent $a$ \emph{observes} agent $a_o$. 
 	
-
+	We also define for all configurations $\config$ the set $\Reach(\config) = \set{\config' \in \configset \mid \exists \run : \config \xrightarrow{*} \config'}$.
 
 	\section{Bounds on the number of observed agents}
 	
@@ -153,7 +153,7 @@
 
 	
 	\begin{lemma}
-		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists another run $\run' : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$, at most $\size{Q}^3$ agents with data $d$ are observed and at most $\size{Q}^{3\size{Q}^3}$\corto{Tentative bound} agents are externally observed.
+		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists another run $\run' : \config_1 \xrightarrow{*} \config_2$ such that at most $\size{Q}^{3\size{Q}^3}$\corto{Tentative bound} agents are externally observed and for all $d \in \Dataset$, at most $\size{Q}^3$ agents with data $d$ are observed.
 	\end{lemma}
 	 
 	
@@ -176,6 +176,29 @@
 	\end{lemma}
 	
 	\section{Logic or game interpretation (bounding quantifiers)}
+	
+	\begin{definition}
+		A \emph{predicate} is a boolean combination of formulas of the form $\exists d_1, \ldots, d_k, \psi$ with $\psi$ a boolean combination of inequalities of the form $\#(q,d_i) \leq B$ with $q\in Q$, $i \in \nset{1}{k}$ and $B \in \nats$.
+		
+		A \emph{specification} is a formula of the form $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$, where for each $i \in \nset{1}{p}$, $Q_i$ is a quantifier and $\phi$ is a boolean combination of pairs $(\config_i, \psi)$ with $i \in \nset{1}{p}$ and $\psi$ a predicate.
+	\end{definition}
+
+	\begin{definition}
+		Let $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$ be a \emph{specification}. We define the following game between two players (called Eve and Adam \corto{Spoiler/Duplicator?}).
+		
+		The game goes as follows: for each $i \in \nset{1}{p}$, iteratively, a player (Eve if $Q_i = \exists$, Adam otherwise) chooses a configuration $\config_i$. 
+		If $i>1$, that configuration must be in $\Reach(\config_{i-1})$. If it is not, the player loses.
+		
+		After all $\config_1, \ldots, \config_p$ have been chosen, we check if the formula $\phi$ is satisfied by them. If it is, Eve wins, otherwise Adam does.
+	\end{definition}
+	
+	\begin{lemma}
+		A specification is true if and only if Eve wins the associated game.
+	\end{lemma}
+	
+	\begin{lemma}
+		For all $p \in \nats$ there exists $n_p, M_p \in \nats$, at most exponential in $\size{Q}$ and $p$, \corto{bound to specify} such that Eve wins the game defined above if and only if she wins the version where both players are restricted to configurations with at most $Mn$ agents.
+	\end{lemma}
 	
 	\section{Complexity}
 	
