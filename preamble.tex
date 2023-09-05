@@ -2,7 +2,7 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{todonotes}
-\usepackage[notion, quotation, silent]{knowledge}
+%\usepackage[notion, quotation, silent]{knowledge}
 %remove silent to have knowledge warnings
 \usepackage{mathtools}
 \usepackage{amssymb}
@@ -26,7 +26,6 @@
 \newcommand{\nats}{\mathbb{N}}
 \newcommand{\set}[1]{\{#1\}}
 \newcommand{\powerset}[1]{2^{#1}}
-\newcommand{\step}[1]{\xrightarrow{#1}}
 \newcommand{\size}[1]{|#1|}
 \newcommand{\nset}[2]{\{#1,\dots,#2\}} %interval of natural numbers
 
@@ -42,11 +41,20 @@
 
 %%% Genral definition
 \newcommand{\prot}{\mathcal{P}} %protocol
+\newcommand{\trans}[2]{\xrightarrow{#2 #1}}
+
+\newcommand{\Agentset}{\mathbb{A}}
+\newcommand{\Dataset}{\mathbb{D}}
 \newcommand{\form}{\mathbf{f}}
+\newcommand{\formset}{\nats^Q_{\neq 0}}
 \newcommand{\config}{\gamma}
+\newcommand{\configset}{\Gamma}
+
+
+\newcommand{\step}[3]{\xrightarrow[#2, #3]{#1}}
 \newcommand{\run}{\rho}
 
-\newcommand{\formapprox}[2]{\overline{#1}^{#2}}
-\newcommand{\configapprox}[3]{\overline{#1}^{#2, #3}}
+\newcommand{\dataapprox}[3]{\overline{#2, #3}^{#1}}
+\newcommand{\configapprox}[3]{\overline{#3}^{#1, #2}}
 
-\newcommand{\FormApproxSet}[2]{\mathbf{FA}_{#1}^{#2}}
+\newcommand{\DataApproxSet}[1]{\mathbf{DA}_{#1}}

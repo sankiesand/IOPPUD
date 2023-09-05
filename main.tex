@@ -124,34 +124,55 @@
 		$I \subseteq Q$ a set of initial states, and
 		$O : Q \to \set{\top, \bot}$ an output function.
 		
-		Here we are interested in \emph{immediate observation population protocols with unordered data} (IOPPUD), which is the subclass of protocols in which every transition is of the form $(q_1, q_2) \xrightarrow{\sim} (q_1, q_3)$.
+		Here we are interested in \emph{immediate observation population protocols with unordered data} (IOPPUD), which is the subclass of protocols in which every transition is of the form $(q_1, q_2, \sim, q_1, q_3)$, with $q_1, q_2, q_3 \in Q$ and $\sim \in \set{=, \neq}$.
+		We will denote such transitions by $q_2 \trans{q_1}{\sim} q_3$.
+	\end{definition}
+	
+	We fix an infinite data domain $\Dataset$ and an infinite set of agents $\Agentset$. We could take them to be $\nats$, but this could cause some confusion with the other uses of $\nats$ in the definitions.
+	
+	A \emph{configuration} is a function $\config$ from $\Agentset$ to $Q \times \Dataset \cup \set{\bot}$.
+	
+	A \emph{step} $\config_1 \step{\sim}{a}{a_o} \config_2$ with $\config_1, \config_2 \in \configset$, $\sim \in \set{=, \neq}$ and $a, a_o \in \Agentset$ is defined when there exists  $\delta = q_1 \trans{q}{\sim} q_2 \in \Delta$ and $d, d_o \in \Dataset$ such that $\config_1(a) = (q_1, d)$, $\config_2(a) = (q_2, d)$ and $\config_1(a_o) = \config_2(a_o) = (q, d_o)$ and $\config_1(a') = \config_2(a')$ for all $a' \neq a$, and $d \sim d_o$.
+	We say that agent $a$ \emph{observes} agent $a_o$. 
+	
+
+
+	\section{Bounds on the number of observed agents}
+	
+		\begin{definition}
+		Let $\run : \config_1$ be a run.
+		We say that agent is \emph{internally observed} in $\run$ if $\run$ contains a step of the form $\config_1 \step{=}{a}{a_o} \config_2$, and \emph{externally observed} if $\run$ contains a step of the form $\config_1 \step{\neq}{a}{a_o} \config_2$.
+		We say that $a_o$ is \emph{observed} in $\run$ if it is either internally or externally observed.
 	\end{definition}
 	
 	
+	\begin{lemma}
+		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists a run $\run' : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$, at most $\size{Q}^3$ agents with data $d$ are observed.
+	\end{lemma}
 	
-	\section{Equivalence relation and bounding lemmas}
+
 	
-	We define the $n$-approximation of a form $\form$ as the vector $\formapprox{\form}{n} : Q \to \nset{0}{n}$ such that for all $q\in Q$, $\formapprox{\form}{n}(q)=\min(\form(q),n)$.
+	\begin{lemma}
+		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists another run $\run' : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$, at most $\size{Q}^3$ agents with data $d$ are observed and at most $\size{Q}^{3\size{Q}^3}$\corto{Tentative bound} agents are externally observed.
+	\end{lemma}
+	 
 	
-	We denote the set of all \textbf{non-zero} $n$-approximations over $Q$ by $\FormApproxSet{Q}{n}$
+	\section{Equivalence relation}
 	
-	Similarly, we define the $(n,M)$-approximation of a configuration $\config$ as the vector $\configapprox{\config}{n}{M} : \FormApproxSet{Q}{n} \to \nset{0}{M}$ such that for all $v\in \FormApproxSet{Q}{n}$,
-	$\configapprox{\config}{n}{M}(v) = \min(\size{\set{d \in \nats \mid \formapprox{\config(d)}{n} = v}},M)$
+	Given a configuration $\config$ and a datum $d \in \Dataset$, we define the $n$-approximation of $d$ in $\config$ as the vector $\dataapprox{n}{\config}{d} : Q \to \nset{0}{n}$ such that for all $q\in Q$, $\dataapprox{n}{\config}{d}(q)=\min(\size{\set{a \in \Agentset \mid \config(a)= (q,d)}},n)$.
+	
+	We denote the set of all \textbf{non-zero} $n$-approximations by $\DataApproxSet{n}$
+	Similarly, we define the $(n,M)$-approximation of a configuration $\config$ as the vector $\configapprox{n}{M}{\config} : \DataApproxSet{n} \to \nset{0}{M}$ such that for all $v\in \DataApproxSet{n}$,
+	$\configapprox{n}{M}{\config}(v) = \min(\size{\set{d \in \nats \mid \dataapprox{n}{\config}{d} = v}},M)$.
 	
 	
 	For all $n, M \in \nats$ we define the following equivalence relation on configurations: 
-	For all $\gamma_1, \gamma_2$, we have $\gamma_1 \equiv_{n,M} \gamma_2$ if and only if $\configapprox{\config_1}{n}{M} = \configapprox{\config_2}{n}{M}$.
+	For all $\config_1, \config_2$, we have $\config_1 \equiv_{n,M} \config_2$ if and only if $\configapprox{n}{M}{\config_1} = \configapprox{n}{M}{\config_2}$.
 	
-	\begin{lemma}
-		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists another run $\run' : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \nats$, at most $\size{Q}^3$ agents with data $d$ are observed.
-	\end{lemma}
 	
-	\begin{lemma}
-		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists another run $\run' : \config_1 \xrightarrow{*} \config_2$ such that at most $\size{Q}^{3\size{Q}^3}$ data $d$ are externally observed.
-	\end{lemma}
 
 	\begin{lemma}
-		For all $n, M \in \nats$, for all configurations $\config_1, \config_2, \config_1'$, if there is a run $\run : \config_1 \xrightarrow{*} \config_2$ and $\config_1 \equiv_{n\size{Q}+\size{Q}^3,M(n\size{Q}+\size{Q}^3)+\size{Q}^{3\size{Q}^3}} \config'_1$ then there exists $\config'_2$ such that $\config'_2 \equiv_{n,M} \config_2$ and there is a run $\run' : \config_1' \xrightarrow{*} \config_2'$.
+		For all $n, M \in \nats$, for all configurations $\config_1, \config_2, \config_1'$, if there is a run $\run : \config_1 \xrightarrow{*} \config_2$ and $\config_1 \equiv_{n\size{Q}+\size{Q}^3,Mn\size{Q}+\size{Q}^{3\size{Q}^3}} \config'_1$ then there exists $\config'_2$ such that $\config'_2 \equiv_{n,M} \config_2$ and there is a run $\run' : \config_1' \xrightarrow{*} \config_2'$.
 	\end{lemma}
 	
 	\section{Logic or game interpretation (bounding quantifiers)}
