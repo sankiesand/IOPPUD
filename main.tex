@@ -147,6 +147,7 @@
 	
 	
 	\begin{lemma}
+		\label{lem:bound-observed-agent}
 		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists a run $\run' : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$, at most $3\size{Q}^3$ agents with data $d$ are observed.
 	\end{lemma}
 	
@@ -171,13 +172,36 @@
 		In total, for all $d$, at most $3\size{Q}^3$ agents are observed in the resulting run.
  	\end{proof}
 
-	
+	\begin{definition}
+		Let $\run : \config_1 \to \config_2$ be a run, $d\in \Dataset$, $\Agentset_o$ the agents with datum $d$ that are observed in $\run$. For all $q_1, q_2 \in Q$ let $\Agentset_{q_1, q_2}$ be the set of agents with datum $d$ that start in $q_1$ and end in $q_2$.
+		We define the \emph{shadow} of $d$ in $\run$ as the function $\shadow{d}{\run} : Q^2 \to \nats \cup \set{\bot}$ such that for all $q_1, q_2 \in Q$, 
+		\begin{equation}
+			\shadow{d}{\run}(q_1, q_2) = 
+			\left\{
+			\begin{aligned}
+				&\bot &\text{ if } \Agentset_{q_1,q_2} =\emptyset\\
+				&\size{\Agentset_o \cap \Agentset_{q_1, q_2}} &\text{ otherwise.}
+			\end{aligned}
+			\right.
+		\end{equation}
+	\end{definition}
+%	
 	\begin{lemma}
+		\label{lem:bound-observed-data}
 		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists another run $\run' : \config_1 \xrightarrow{*} \config_2$ such that at most $3\size{Q}^{9\size{Q}^3}$\corto{Tentative bound} agents are externally observed and for all $d \in \Dataset$, at most $\size{Q}^3$ agents with data $d$ are observed.
 	\end{lemma}
 	 
 	 
-	
+%	\begin{proof}
+%		We proceed similarly to the proof of \cref{lem:bound-observed-agent}. 
+%		Let $\Dataset_\run$ be the set of data appearing in $\run$.
+%		
+%		By~\cref{lem:bound-observed-agent}, we can assume that at most $3\size{Q}^3$ agents with datum $d$ are observed for all $d\in \Dataset_\run$. For all $d$ let $\Agentset_d$ be its set of agents and $\Agentset_d^o$ the subset of those agents that are observed at some point in the run. 
+%		
+%		Given a prefix $\run'$ of $\run$, define the \emph{shadow} of a datum $d$ after $\run'$ as the element of $\nset{0}{3\size{Q}^3}^Q \times \pow{Q^2}$ counting agents of $\Agentset_d^o$ in each state and listing the pairs $(q_1, q_2)$ of states such that at least one agent of $\Agentset_d$ started in $q_1$ and is in $q_2$ after executing $\run'$.
+%	\end{proof}
+%	
+%	
 	\section{Equivalence relation}
 	
 	Given a configuration $\config$ and a datum $d \in \Dataset$, we define the $n$-approximation of $d$ in $\config$ as the vector $\dataapprox{n}{\config}{d} : Q \to \nset{0}{n}$ such that for all $q\in Q$, $\dataapprox{n}{\config}{d}(q)=\min(\size{\set{a \in \Agentset \mid \config(a)= (q,d)}},n)$.
