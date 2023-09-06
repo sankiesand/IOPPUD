@@ -147,14 +147,35 @@
 	
 	
 	\begin{lemma}
-		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists a run $\run' : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$, at most $\size{Q}^3$ agents with data $d$ are observed.
+		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists a run $\run' : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$, at most $3\size{Q}^3$ agents with data $d$ are observed.
 	\end{lemma}
 	
+	\begin{proof}
+		We mimic the \emph{bunch} argument from \corto{ref}. 
+		
+		Let $d\in \Dataset$ a datum appearing in $\run$, and let $q_1, q_2 \in Q$, and let $\Agentset_{q_1, q_2}$ be the set of agents that are both in $q_1$ at the start and in $q_2$ at the end of $\run$. Suppose $\size{\Agentset_{q_1, q_2}} \geq 3\size{Q}$, then let $S$ be the set of states visited by agents of $\Agentset_{q_1, q_2}$ in $\run$.
+		
+		For all $q \in S$ let $\alpha_q$ be the first agent of $\Agentset_{q_1, q_2}$ to reach $q$ (for $q_1$ we pick one arbitrarily), and $\beta_q$ the last one to leave it (we pick an arbitrary agent for $\beta_{q_2}$). 
+		Note that those agents do not have to be distinct.
+		  
+		We pick a family of agents $(a_q)_{q \in S}$ disjoint from $(\alpha_q)_{q \in S}$ and $(\beta_q)_{q \in S}$.
+		
+		We reorganise the run as follows: All agents behave as before, except the $a_q$. Each $a_q$ copycats $\alpha_q$ until $\alpha_q$ reaches $q$, then stays idle until the moment $\beta_q$ leaves $q$ (if $q \neq q_2$). From this point on, $a_q$ copycats $\beta_q$.
+		
+		Whenever an agent observes an agent of $\Agentset_{q_1, q_2}$ in state $q$, as this must happen between the arrival of $\alpha_q$ and the departure of $\beta_q$, thus $a_q$ is in $q$ at this point and can be observed instead. Hence all observations are still possible, and only agents of $(a_{q})_{q\in S}$ are observed among $\Agentset_{q_1, q_2}$.
+		
+		The start and end configurations are the same as before as all $a_q$ still go from $q_1$ to $q_2$, and other agents behave the same.
+		
+		By applying this transformation on all data appearing in $\run$ and all pairs of state $q_1, q_2$, we obtain a run in which for all $d$, $q_1$, $q_2$, at most $3\size{Q}$ agents going from $q_1$ to $q_2$ with datum $d$ are observed (either there are less than $3\size{Q}$ such agents, or we ensured than at most $\size{Q}$ of them are observed).
+		
+		In total, for all $d$, at most $3\size{Q}^3$ agents are observed in the resulting run.
+ 	\end{proof}
 
 	
 	\begin{lemma}
-		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists another run $\run' : \config_1 \xrightarrow{*} \config_2$ such that at most $\size{Q}^{3\size{Q}^3}$\corto{Tentative bound} agents are externally observed and for all $d \in \Dataset$, at most $\size{Q}^3$ agents with data $d$ are observed.
+		For all run $\run : \config_1 \xrightarrow{*} \config_2$ there exists another run $\run' : \config_1 \xrightarrow{*} \config_2$ such that at most $3\size{Q}^{9\size{Q}^3}$\corto{Tentative bound} agents are externally observed and for all $d \in \Dataset$, at most $\size{Q}^3$ agents with data $d$ are observed.
 	\end{lemma}
+	 
 	 
 	
 	\section{Equivalence relation}
@@ -184,7 +205,7 @@
 	\end{definition}
 
 	\begin{definition}
-		Let $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$ be a \emph{specification}. We define the following game between two players (called Eve and Adam \corto{Spoiler/Duplicator?}).
+		Let $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$ be a \emph{specification}. We define the following game between two players (called Eve and Adam\corto{Spoiler/Duplicator?}).
 		
 		The game goes as follows: for each $i \in \nset{1}{p}$, iteratively, a player (Eve if $Q_i = \exists$, Adam otherwise) chooses a configuration $\config_i$. 
 		If $i>1$, that configuration must be in $\Reach(\config_{i-1})$. If it is not, the player loses.
