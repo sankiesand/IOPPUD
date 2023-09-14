@@ -1,0 +1,27 @@
+\section{Logic or game interpretation (bounding quantifiers)}
+\label{sec:quantifier-bounds}
+
+
+\begin{definition}
+	A ""predicate"" is a boolean combination of formulas of the form $\exists d_1, \ldots, d_k, \psi$ with $\psi$ a boolean combination of inequalities of the form $\#(q,d_i) \leq B$ with $q\in Q$, $i \in \nset{1}{k}$ and $B \in \nats$.
+	
+	A ""specification"" is a formula of the form $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$, where for each $i \in \nset{1}{p}$, $Q_i$ is a quantifier and $\phi$ is a boolean combination of pairs $(\config_i, \psi)$ with $i \in \nset{1}{p}$ and $\psi$ a "predicate".
+\end{definition}
+
+\begin{definition}
+	Let $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$ be a "specification". We define the following game between two players (called Eve and Adam.\cortoin{Spoiler/Duplicator?})
+	
+	The game goes as follows: for each $i \in \nset{1}{p}$, iteratively, a player (Eve if $Q_i = \exists$, Adam otherwise) chooses a "configuration" $\config_i$. 
+	If $i>1$, that "configuration" must be in $\Reach(\config_{i-1})$. If it is not, the player loses.
+	
+	After all $\config_1, \ldots, \config_p$ have been chosen, we check if the formula $\phi$ is satisfied by them. If it is, Eve wins, otherwise Adam does.
+\end{definition}
+
+\begin{lemma}
+	A "specification" is satisfied if and only if Eve wins the associated game.
+\end{lemma}
+
+\begin{lemma}
+	For all $p \in \nats$ there exists $n_p, M_p \in \nats$, at most exponential in $\size{Q}$ and $p$, \cortoin{bound to specify} such that Eve wins the game defined above if and only if she wins the version where both players are restricted to "configurations" with at most $Mn$ agents.
+\end{lemma}
+

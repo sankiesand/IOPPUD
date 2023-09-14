@@ -1,0 +1,25 @@
+\section{Definitions}
+\label{sec:definitions}
+
+
+\begin{definition}
+	A ""population protocol with unordered data"" ("PPUD") is a tuple $(Q, \delta, I, O)$ with $Q$ a finite set of states,
+	$\Delta \subseteq Q^2 \times \set{=, \neq} \times Q^2$ a set of transitions,
+	$I \subseteq Q$ a set of initial states, and
+	$O : Q \to \set{\top, \bot}$ an output function.
+	
+	In this work we are interested in ""immediate observation PPUD"" ("IOPPUD"), which is the subclass of protocols in which every transition is of the form $(q_1, q_2, \sim, q_1, q_3)$, with $q_1, q_2, q_3 \in Q$ and $\sim \in \set{=, \neq}$.
+	We will denote such transitions by $q_2 \trans{q_1}{\sim} q_3$.
+\end{definition}
+
+We fix an infinite data domain $\Dataset$, an infinite set of agents $\Agentset$ and a function $\intro*\dataof : \Agentset \to \Dataset$ such that $\dataof^{-1}(d)$ is infinite for all $d \in \Dataset$. 
+
+A ""configuration"" is a function $\config : \Agentset \to Q \times \Dataset \cup \set{\bot}$. The set of all "configurations" is written $\intro*\configset$.
+A ""step"" $\config_1 \step{\sim}{a}{a_o} \config_2$ with $\config_1, \config_2 \in \configset$, $\sim \in \set{=, \neq}$ and $a, a_o \in \Agentset$ is defined when there exists  $\delta = q_1 \trans{q}{\sim} q_2 \in \Delta$ and $d, d_o \in \Dataset$ such that $\config_1(a) = (q_1, d)$, $\config_2(a) = (q_2, d)$ and $\config_1(a_o) = \config_2(a_o) = (q, d_o)$ and $\config_1(a') = \config_2(a')$ for all $a' \neq a$, and $d \sim d_o$.
+We say that agent $a$ ""observes"" agent $a_o$. 
+We will write $\config_1 \to \config_2$ to say that there exist $a, a_0$ and $\sim$ such that $\config_1 \step{\sim}{a}{a_o} \config_2$.
+
+A ""run"" $\run$ is a sequence of consecutive "steps" $\run: \config_0 \to \config_1 \to \cdots \to  \config_m$.
+Further, for all $i \in \nset{1}{m}$, we define the prefix run $\prefixrun{\run}{i} = \config_0 \to \config_1 \to \cdots \to  \config_i$ and suffix run $\suffixrun{\run}{i} = \config_i \to \config_{i+1} \to \cdots \to  \config_m$. We write $\run : \config \xrightarrow{*} \config'$ to say that $\run$ goes from $\config$ to $\config'$. 
+
+We also define for all "configurations" $\config$ the set $\Reach(\config) = \set{\config' \in \configset \mid \exists \run : \config \xrightarrow{*} \config'}$.

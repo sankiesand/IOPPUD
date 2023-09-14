@@ -1,0 +1,79 @@
+\definecolor{Blue Sapphire}{HTML}{002346} 
+\definecolor{Gamboge}{HTML}{ee9b00}
+\definecolor{Ruby Red}{HTML}{800000}
+
+\IfKnowledgePaperModeTF{
+	%
+}{
+	% If we are NOT in paper mode (i.e. in composition mode or electronic mode)
+	\knowledgestyle{intro notion}{color={Ruby Red}, emphasize}
+	\knowledgestyle{notion}{color={Blue Sapphire}}
+	\hypersetup{
+		colorlinks=true,
+		breaklinks=true,
+		linkcolor={Blue Sapphire}, % Links to sections, pages, etc.
+		citecolor={Blue Sapphire}, % Links to bibliography
+		filecolor={Blue Sapphire}, % Links to local file
+		urlcolor={Blue Sapphire},
+	}
+}
+\IfKnowledgeCompositionModeTF{
+	% If we are in composition mode, highlight unknown stuff (in yellow) and display the anchor point.
+	\knowledgeconfigure{anchor point color={Ruby Red}, anchor point shape=corner}
+	\knowledgestyle{intro unknown}{color={Gamboge}, emphasize}
+	\knowledgestyle{intro unknown cont}{color={Gamboge}, emphasize}
+	\knowledgestyle{kl unknown}{color={Gamboge}}
+	\knowledgestyle{kl unknown cont}{color={Gamboge}}
+}{
+	%
+}
+
+
+\knowledge{notion}
+| population protocol with unordered data
+| PPUD
+
+\knowledge{notion}
+| immediate observation PPUD
+| IOPPUD
+
+\knowledge{notion}
+| configuration
+| configurations
+
+\knowledge{notion}
+| step
+| steps
+
+\knowledge{notion}
+| run
+| runs
+
+\knowledge{notion}
+| observe
+| observes
+
+\knowledge{notion}
+| observed
+| observations
+| non-observed
+
+\knowledge{notion}
+| internally observed
+| internally
+
+\knowledge{notion}
+| externally observed
+| externally
+
+\knowledge{notion}
+| shadows
+| shadow
+
+\knowledge{notion}
+| specification
+| specifications
+
+\knowledge{notion}
+| predicates
+| predicate

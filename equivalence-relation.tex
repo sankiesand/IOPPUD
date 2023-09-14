@@ -1,0 +1,18 @@
+\section{Equivalence relation}
+\label{sec:equivalence-relation}
+
+Given a configuration $\config$ and a datum $d \in \Dataset$, we define the $n$-approximation of $d$ in $\config$ as the vector $\dataapprox{n}{\config}{d} : Q \to \nset{0}{n}$ such that for all $q\in Q$, $\dataapprox{n}{\config}{d}(q)=\min(\size{\set{a \in \Agentset \mid \config(a)= (q,d)}},n)$.
+
+We denote the set of all \textbf{non-zero} $n$-approximations by $\DataApproxSet{n}$
+Similarly, we define the $(n,M)$-approximation of a configuration $\config$ as the vector $\configapprox{n}{M}{\config} : \DataApproxSet{n} \to \nset{0}{M}$ such that for all $v\in \DataApproxSet{n}$,
+$\configapprox{n}{M}{\config}(v) = \min(\size{\set{d \in \nats \mid \dataapprox{n}{\config}{d} = v}},M)$.
+
+
+For all $n, M \in \nats$ we define the following equivalence relation on configurations: 
+For all $\config_1, \config_2$, we have $\config_1 \equiv_{n,M} \config_2$ if and only if $\configapprox{n}{M}{\config_1} = \configapprox{n}{M}{\config_2}$.
+
+
+
+\begin{lemma}
+	For all $n, M \in \nats$, for all configurations $\config_1, \config_2, \config_1'$, if there is a run $\run : \config_1 \xrightarrow{*} \config_2$ and $\config_1 \equiv_{n\size{Q}+\size{Q}^3,Mn\size{Q}+\size{Q}^{3\size{Q}^3}} \config'_1$ then there exists $\config'_2$ such that $\config'_2 \equiv_{n,M} \config_2$ and there is a run $\run' : \config_1' \xrightarrow{*} \config_2'$.
+\end{lemma}

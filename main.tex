@@ -103,6 +103,7 @@
 
 
 \input{preamble}
+\input{kl}
 
 
 \begin{document}
@@ -114,191 +115,20 @@
 		We study IOPPUDs.
 	\end{abstract}
 	
-	\section{Introduction}
+	\input{introduction}
 	
-	\section{Definitions}
-	
-	\begin{definition}
-		A \emph{population protocol with unordered data} is a tuple $(Q, \delta, I, O)$ with $Q$ a finite set of states,
-		$\Delta \subseteq Q^2 \times \set{=, \neq} \times Q^2$ a set of transitions,
-		$I \subseteq Q$ a set of initial states, and
-		$O : Q \to \set{\top, \bot}$ an output function.
-		
-		Here we are interested in \emph{immediate observation population protocols with unordered data} (IOPPUD), which is the subclass of protocols in which every transition is of the form $(q_1, q_2, \sim, q_1, q_3)$, with $q_1, q_2, q_3 \in Q$ and $\sim \in \set{=, \neq}$.
-		We will denote such transitions by $q_2 \trans{q_1}{\sim} q_3$.
-	\end{definition}
-	
-	We fix an infinite data domain $\Dataset$ and an infinite set of agents $\Agentset$. We could take them to be $\nats$, but this could cause some confusion with the other uses of $\nats$ in the definitions.
-	
-	A \emph{configuration} is a function $\config$ from $\Agentset$ to $Q \times \Dataset \cup \set{\bot}$. The set of all configurations is written $\configset$.
-	
-	A \emph{step} $\config_1 \step{\sim}{a}{a_o} \config_2$ with $\config_1, \config_2 \in \configset$, $\sim \in \set{=, \neq}$ and $a, a_o \in \Agentset$ is defined when there exists  $\delta = q_1 \trans{q}{\sim} q_2 \in \Delta$ and $d, d_o \in \Dataset$ such that $\config_1(a) = (q_1, d)$, $\config_2(a) = (q_2, d)$ and $\config_1(a_o) = \config_2(a_o) = (q, d_o)$ and $\config_1(a') = \config_2(a')$ for all $a' \neq a$, and $d \sim d_o$.
-	We say that agent $a$ \emph{observes} agent $a_o$. 
-	We will write $\config_1 \to \config_2$ to say that there exist $a, a_0$ and $\sim$ such that $\config_1 \step{\sim}{a}{a_o} \config_2$.
-	
-	A \emph{run} $\run$ is a sequence of consecutive steps $\run: \config_0 \to \config_1 \to \cdots \to  \config_i$.
-	Further, for all $i \in \nset{1}{m}$, we define the prefix run $\prefixrun{\run}{i} = \config_0 \to \config_1 \to \cdots \to  \config_i$ and suffix run $\suffixrun{\run}{i} = \config_i \to \config_{i+1} \to \cdots \to  \config_m$.
-	
-	
-	We also define for all configurations $\config$ the set $\Reach(\config) = \set{\config' \in \configset \mid \exists \run : \config \xrightarrow{*} \config'}$.
+	\input{definitions}
 
-	\section{Bounds on the number of observed agents}
+	\input{bounds-observed-agents}
 	
-		\begin{definition}
-		Let $\run : \config_1$ be a run.
-		We say that agent is \emph{internally observed} in $\run$ if $\run$ contains a step of the form $\config_1 \step{=}{a}{a_o} \config_2$, and \emph{externally observed} if $\run$ contains a step of the form $\config_1 \step{\neq}{a}{a_o} \config_2$.
-		We say that $a_o$ is \emph{observed} in $\run$ if it is either internally or externally observed.
-	\end{definition}
+	\input{equivalence-relation}
 	
+	\input{quantifier-bounds}
 	
-	\begin{lemma}
-		\label{lem:bound-observed-agent}
-		Let $\run : \config_1 \xrightarrow{*} \config_2$ be a run with $\Agentset_{\run}$ the set of agents appearing in it. There exists a run $\run' : \config'_1 \xrightarrow{*} \config'_2$ over a subset of agents $\Agentset_{\run'} \subseteq \Agentset_{\run}$ such that:
-		\begin{itemize}
-			\item for all $a \in \Agentset_{\run'}$, $\config_1(a) = \config'_1(a)$ and $\config_2(a) = \config'_2(a)$,
-			
-			\item and for all $d \in \Dataset$, $q_1, q_2 \in Q$, if there exists an agent in $\Agentset_{\run}$ such that $\config_1(a) = (q_1, d)$ and $\config_2(a) = (q_2, d)$ then there is such an agent in $\Agentset_{\run'}$.
-			
-			\item For all $d \in \Dataset$, there are at most $3\size{Q}^3$ \corto{we can achieve $\size{Q}^3$ but I think it makes the proof a little more technical} agents with datum $d$ in $\Agentset_{\run'}$.
-		\end{itemize}
-	\end{lemma}
-	
-	\begin{proof}
-		We mimic the \emph{bunch} argument from \corto{add ref}. 
-		
-		Let $d\in \Dataset$ a datum appearing in $\run$, and let $q_1, q_2 \in Q$, and let $\Agentset_{d, q_1, q_2}$ be the set of agents with datum $d$ that are both in $q_1$ in $\config_1$ and in $q_2$ in $\config_2$. Suppose $\size{\Agentset_{d, q_1, q_2}} \geq 3\size{Q}$, then let $S$ be the set of states visited by agents of $\Agentset_{d, q_1, q_2}$ in $\run$.
-		
-		For all $q \in S$ let $\alpha_q$ be the first agent of $\Agentset_{q_1, q_2}$ to reach $q$ (for $q_1$ we pick one arbitrarily), and $\beta_q$ the last one to leave it (we pick an arbitrary agent for $\beta_{q_2}$). 
-		Note that those agents do not have to be distinct.
-		  
-		We pick a family of distinct agents $(a_q)_{q \in S}$ in $\Agentset$ that is disjoint from $(\alpha_q)$ and $(\beta_q)$.
-		
-		We define a new run $\overline{\run}$, where all agents not in $\Agentset_{d, q_1, q_2}$, as well as all $\alpha_q$ and $\beta_q$ behave the same. The agents of $\Agentset_{d, q_1, q_2}$ besides the $\alpha_q, \beta_q$ and $a_q$ are deleted.
-		Each $a_q$ mimics the transitions taken by $\alpha_q$ until it reaches $q$, then stays idle until $\beta_q$ reaches $q$ for the last time, after which it mimics $\beta_q$. \corto{informal, formal proof by induction on the run}
-		
-		Whenever an agent observes an agent of $\Agentset_{q_1, q_2}$ in state $q$, as this must happen in $\run$ between the arrival of $\alpha_q$ and the departure of $\beta_q$, $a_q$ is in $q$ at this point in $\overline{\run}$ and can hence be observed instead. Therefore all observations are still possible, and only agents of $(a_{q})_{q\in S}$ are observed among $\Agentset_{q_1, q_2}$.
-		
-		The start and end configurations are the same as before for all remaining agents as all $a_q$ still go from $q_1$ to $q_2$, and other agents behave the same.
-		
-		By applying this transformation on all data appearing in $\run$ and all pairs of state $q_1, q_2$, we obtain a run $\run'$ in which for all $d$, $q_1$, $q_2$, at most $3\size{Q}$ agents going from $q_1$ to $q_2$ with datum $d$ remain (either there are less than $3\size{Q}$ such agents, or we ensured than at most $\size{Q}$ of them are observed).
-		
-		In total, for all $d$, at most $3\size{Q}^3$ agents per datum.
- 	\end{proof}
- 
- 	\begin{corollary}
- 		For all run $\run : \config_1 \xrightarrow{*} \config_2$, there exists a run $\Tilde{\run} : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$,at most $\size{Q}^3$ agents with datum $d$ are observed in $\run$.
- 	\end{corollary}
- 
- 	\begin{proof}
- 		Take the run $\run'$ from~\cref{lem:bound-observed-agent} and add the missing agents by making them copycat an agent with the same datum, initial and final state from $\Agentset_{\run'}$. Such an agent exists by the second item of the lemma.
- 	\end{proof}
-
-	\begin{definition}
-		Let $\run : \config_1 \xrightarrow{*} \config_2$ be a run, $d\in \Dataset$, $\Agentset_o$ the agents with datum $d$ that are observed in $\run$. For all $q_1, q_2 \in Q$ let $\Agentset_{q_1, q_2}$ be the set of agents with datum $d$ that start in $q_1$ and end in $q_2$.
-		We define the \emph{shadow} of $d$ in $\run$ as the function $\shadow{d}{\run} : Q^2 \to \nats \cup \set{\bot}$ such that for all $q_1, q_2 \in Q$, 
-		\begin{equation}
-			\shadow{d}{\run}(q_1, q_2) = 
-			\left\{
-			\begin{aligned}
-				&\bot &\text{ if } \Agentset_{q_1,q_2} =\emptyset\\
-				&\size{\Agentset_o \cap \Agentset_{q_1, q_2}} &\text{ otherwise.}
-			\end{aligned}
-			\right.
-		\end{equation}
-	\end{definition}
-%	
-	The shadow of $d$ describes the flow of its agents between states in the run. For each pair of states $q_1, q_2$ it indicates if some agents of $d$ started in $q_1$ and ended in $q_2$ and counts the observed ones among them. The idea is that if two data $d, d'$ have the same shadow in $\run$ and no agent of $d'$ is externally observed, then we can make each agents of $d'$ copycat an agent of $d$ so that in the end they all reach the same end configuration.
-
-
-	\begin{lemma}
-		\label{lem:bound-observed-data}
-		Let $\run : \config_0 \to \config_2 \to \cdots \to \config_m$ be a run  over a set of data $\Dataset_{\run}$, and let $K$ be such that there are at most $K$ observed agents of each datum observed in the run. There exists another run $\run' : \config_0 \xrightarrow{*} \config_m$ and a subset of data $\Dataset_{\run'}$ such that:
-		\begin{itemize}
-				\item for all agents $a$ of datum $d \in \Dataset_{\run'}$, $\config_1(a) = \config'_1(a)$ and $\config_2(a) = \config'_2(a)$,
-				
-				\item for all $d \in \Dataset_{\run}$, there exists $d' \in \Dataset_{\run'}$ such that $\shadow{d'}{\run'} = \shadow{d}{\run}$.
-				
-				\item $\size{\Dataset_{\run'}} \leq 4(K+2)^{2\size{Q}^2}$.
-		\end{itemize}
-	\end{lemma}
-	 
-	 
-	\begin{proof}
-		We proceed similarly to the proof of \cref{lem:bound-observed-agent}. 
-		Let $\Dataset_\run$ be the set of data appearing in $\run$.
-		For all $d$ let $\Agentset_d$ be its set of agents and $\Agentset_{d,o}$ the subset of those agents that are observed at some point in the run.
-		
-		As no more than $K$ agents of each datum are observed through $\run$ that the shadows of all data are bounded by $K$ and thus there are at most $(K+2)^{\size{Q}^2}$ different ones. This also holds for all prefixes and suffixes of $\run$.
-		
-		Let $M=(K+2)^{2\size{Q}^2}$. 
-		For all $d \in \Dataset_\run$ and $i \in \nset{1}{m}$ we define $\sigma(d,i) = (\shadow{d}{\prefixrun{\run}{i}}, \shadow{d}{\suffixrun{\run}{i}})$. 
-		
-		We now lift the proof of \cref{lem:bound-observed-agent} from agents to data.
-		Let $\ashadow : Q^2 \to \nset{0}{K}\cup \bot$ and let $\Dataset_{\ashadow} = \set{d \in \Dataset_{\run} \mid \shadow{d}{\run} = \ashadow}$. 
-		Suppose $\size{\Dataset_{\ashadow}} \geq 4M$. 
-		Let $S = \set{\sigma(d,i) \mid d \in \Dataset_{\ashadow}, i\in\nset{1}{m}}$. Note that $\size{S}\leq M$.
-		
-		For each $s \in S$ define $\alpha_s$ as the datum reaching $s$ first in $\run$ and $\beta_s$ as the last one.
-		Then as $\size{\Dataset_{\ashadow}}\geq 4M$, we can pick for each $s \in S$ data $d_s, e_s \in \Dataset_{\ashadow}$ and such that the $(d_s)_{s\in S}, (e_s)_{s\in S}$ are disjoint and disjoint from the $(\alpha_s)_{s\in S}$ and $(\beta_s)_{s\in S}$.
-		
-		We create a new run $\overline{\run}$ where all agents with datum in $\set{\alpha_s, \beta_s \mid s \in S} \cup (\Dataset \setminus \Dataset_{\ashadow})$ behave the same. 
-		The agents with datum in $\Dataset_{\ashadow} \setminus \set{\alpha_s, \beta_s, d_s, e_s \mid s \in S}$ are deleted.
-		
-		Let $s = (\ashadow_1, \ashadow_2) \in S$, we make agents of $d_s$ and $e_s$ and $e_s$ follow the ones of $\alpha_s$, then stay idle until $\beta_s$ last reaches $s$, and then follow $\beta_s$.
-		This is possible as they have the same shadows, hence we can match observed agents of $d_s$ (and $e_s$) to the ones of $\alpha_s$ (resp. $\beta_s$) one-to-one while preserving the states of departure and arrival, and the non-observed of $d_s$ and $e_s$ can follow agents of $\alpha_s$ (resp. $\beta_s$) that have the same starting and finishing states.
-		
-		When an agent with a datum $d$ is externally observed at step $i$ in $\run$, we consider $s = \sigma(d,i)$ and make the moving agent observe $d_s$ or $e_s$ instead (one of them has to be different from $d$).
-	\end{proof}
-	
-	 \begin{corollary}
-		For all run $\run : \config_1 \xrightarrow{*} \config_2$, there exists a run $\Tilde{\run} : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$,at most $\size{Q}^3$ agents with datum $d$ are observed in $\run$, and agents of at most $4(3\size{Q}^3+2)^{2\size{Q}^2}$ different data are observed.
-	\end{corollary}
-	
-	
-	\section{Equivalence relation}
-	
-	Given a configuration $\config$ and a datum $d \in \Dataset$, we define the $n$-approximation of $d$ in $\config$ as the vector $\dataapprox{n}{\config}{d} : Q \to \nset{0}{n}$ such that for all $q\in Q$, $\dataapprox{n}{\config}{d}(q)=\min(\size{\set{a \in \Agentset \mid \config(a)= (q,d)}},n)$.
-	
-	We denote the set of all \textbf{non-zero} $n$-approximations by $\DataApproxSet{n}$
-	Similarly, we define the $(n,M)$-approximation of a configuration $\config$ as the vector $\configapprox{n}{M}{\config} : \DataApproxSet{n} \to \nset{0}{M}$ such that for all $v\in \DataApproxSet{n}$,
-	$\configapprox{n}{M}{\config}(v) = \min(\size{\set{d \in \nats \mid \dataapprox{n}{\config}{d} = v}},M)$.
-	
-	
-	For all $n, M \in \nats$ we define the following equivalence relation on configurations: 
-	For all $\config_1, \config_2$, we have $\config_1 \equiv_{n,M} \config_2$ if and only if $\configapprox{n}{M}{\config_1} = \configapprox{n}{M}{\config_2}$.
-	
-	
-
-	\begin{lemma}
-		For all $n, M \in \nats$, for all configurations $\config_1, \config_2, \config_1'$, if there is a run $\run : \config_1 \xrightarrow{*} \config_2$ and $\config_1 \equiv_{n\size{Q}+\size{Q}^3,Mn\size{Q}+\size{Q}^{3\size{Q}^3}} \config'_1$ then there exists $\config'_2$ such that $\config'_2 \equiv_{n,M} \config_2$ and there is a run $\run' : \config_1' \xrightarrow{*} \config_2'$.
-	\end{lemma}
-	
-	\section{Logic or game interpretation (bounding quantifiers)}
-	
-	\begin{definition}
-		A \emph{predicate} is a boolean combination of formulas of the form $\exists d_1, \ldots, d_k, \psi$ with $\psi$ a boolean combination of inequalities of the form $\#(q,d_i) \leq B$ with $q\in Q$, $i \in \nset{1}{k}$ and $B \in \nats$.
-		
-		A \emph{specification} is a formula of the form $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$, where for each $i \in \nset{1}{p}$, $Q_i$ is a quantifier and $\phi$ is a boolean combination of pairs $(\config_i, \psi)$ with $i \in \nset{1}{p}$ and $\psi$ a predicate.
-	\end{definition}
-
-	\begin{definition}
-		Let $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$ be a \emph{specification}. We define the following game between two players (called Eve and Adam\corto{Spoiler/Duplicator?}).
-		
-		The game goes as follows: for each $i \in \nset{1}{p}$, iteratively, a player (Eve if $Q_i = \exists$, Adam otherwise) chooses a configuration $\config_i$. 
-		If $i>1$, that configuration must be in $\Reach(\config_{i-1})$. If it is not, the player loses.
-		
-		After all $\config_1, \ldots, \config_p$ have been chosen, we check if the formula $\phi$ is satisfied by them. If it is, Eve wins, otherwise Adam does.
-	\end{definition}
-	
-	\begin{lemma}
-		A specification is true if and only if Eve wins the associated game.
-	\end{lemma}
-	
-	\begin{lemma}
-		For all $p \in \nats$ there exists $n_p, M_p \in \nats$, at most exponential in $\size{Q}$ and $p$, \corto{bound to specify} such that Eve wins the game defined above if and only if she wins the version where both players are restricted to configurations with at most $Mn$ agents.
-	\end{lemma}
-	
-	\section{Complexity}
+	\input{complexity}
 	
 	\section{Conclusion}
+	\label{sec:conclusion}
+	
+	\bibliography{biblio}
 \end{document}

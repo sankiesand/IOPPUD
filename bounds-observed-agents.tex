@@ -1,0 +1,110 @@
+\section{Bounds on the number of observed agents}
+\label{sec:bounds-observed-agents}
+
+\begin{definition}
+	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run".
+	We say that agent $a_0$ is ""internally observed"" in $\run$ if $\run$ contains a step of the form $\config_1 \step{=}{a}{a_o} \config_2$, and ""externally observed"" if $\run$ contains a step of the form $\config_1 \step{\neq}{a}{a_o} \config_2$.
+	We say that $a_o$ is ""observed"" in $\run$ if it is either "internally" or "externally observed", and that a datum $d$ is observed if an agent $a$ with $\dataof(a) =d$ is. 
+\end{definition}
+
+
+\begin{lemma}
+	\label{lem:bound-observed-agent}
+	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run" with $\Agentset_{\run}$ the set of agents appearing in it. There exists a "run" $\run' : \config'_1 \xrightarrow{*} \config'_2$ over a subset of agents $\Agentset_{\run'} \subseteq \Agentset_{\run}$ such that:
+	\begin{itemize}
+		\item for all $a \in \Agentset_{\run'}$, $\config_1(a) = \config'_1(a)$ and $\config_2(a) = \config'_2(a)$,
+		
+		\item and for all $d \in \Dataset$, $q_1, q_2 \in Q$, if there exists an agent in $\Agentset_{\run}$ such that $\config_1(a) = (q_1, d)$ and $\config_2(a) = (q_2, d)$ then there is such an agent in $\Agentset_{\run'}$.
+		
+		\item For all $d \in \Dataset$, there are at most $3\size{Q}^3$ agents with datum $d$ in $\Agentset_{\run'}$.
+		\cortoin{we can achieve $\size{Q}^3$ but I think it makes the proof a little more technical}
+	\end{itemize}
+\end{lemma}
+
+\begin{proof}
+	We mimic the \emph{bunch} argument from \cite{EsparzaRW2019}. 
+	Let $d\in \Dataset$ a datum appearing in $\run$, and let $q_1, q_2 \in Q$, and $\Agentset_{d, q_1, q_2} = \set{a \in \Agentset_{\run} \mid \dataof(a) = d, \config_1(a) = q_1, \config_2(a) = q_2}$. Suppose $\size{\Agentset_{d, q_1, q_2}} \geq 3\size{Q}$, then let $S$ be the set of states visited by agents of $\Agentset_{d, q_1, q_2}$ in $\run$.
+	
+	For all $q \in S$ let $\alpha_q$ be the first agent of $\Agentset_{q_1, q_2}$ to reach $q$ (for $q_1$ we pick one arbitrarily), and $\beta_q$ the last one to leave it (we pick an arbitrary agent for $\beta_{q_2}$). 
+	Note that those agents do not have to be distinct.
+	
+	We pick a family of distinct agents $(a_q)_{q \in S}$ in $\Agentset$ that is disjoint from $(\alpha_q)_{q \in S}$ and $(\beta_q)_{q \in S}$.
+	We define a new "run" $\overline{\run}$, where all agents not in $\Agentset_{d, q_1, q_2}$, as well as all $\alpha_q$ and $\beta_q$ behave the same. The agents of $\Agentset_{d, q_1, q_2}$ besides the $\alpha_q, \beta_q$ and $a_q$ are deleted.
+	Each $a_q$ mimics the transitions taken by $\alpha_q$ until it reaches $q$, then stays idle until $\beta_q$ reaches $q$ for the last time, after which it mimics $\beta_q$. \cortoin{informal, formal proof by induction on the "run"}
+	
+	Whenever an agent "observes" an agent of $\Agentset_{q_1, q_2}$ in state $q$, as this must happen in $\run$ between the arrival of $\alpha_q$ and the departure of $\beta_q$, $a_q$ is in $q$ at this point in $\overline{\run}$ and can hence be "observed" instead. Therefore all "observations" are still possible, and only agents of $(a_{q})_{q\in S}$ are "observed" among $\Agentset_{q_1, q_2}$.
+	
+	The start and end "configurations" are the same as before for all remaining agents as all $a_q$ still go from $q_1$ to $q_2$, and other agents behave the same.
+	
+	By applying this transformation on all data appearing in $\run$ and all pairs of state $q_1, q_2$, we obtain a "run" $\run'$ in which for all $d$, $q_1$, $q_2$, at most $3\size{Q}$ agents going from $q_1$ to $q_2$ with datum $d$ remain (either there are less than $3\size{Q}$ such agents, or we ensured than at most $\size{Q}$ of them are "observed").
+	In total, for all $d$, at most $3\size{Q}^3$ agents per datum remain.
+\end{proof}
+
+\begin{corollary}
+	For all "run" $\run : \config_1 \xrightarrow{*} \config_2$, there exists a "run" $\Tilde{\run} : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$,at most $\size{Q}^3$ agents with datum $d$ are "observed" in $\run$.
+\end{corollary}
+
+\begin{proof}
+	Take the "run" $\run'$ from~\cref{lem:bound-observed-agent} and add the missing agents by making them copycat an agent with the same datum, initial and final state from $\Agentset_{\run'}$. Such an agent exists by the second item of the lemma.
+\end{proof}
+
+\begin{definition}
+	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run", $d\in \Dataset$, $\Agentset_o$ the agents with datum $d$ that are "observed" in $\run$. For all $q_1, q_2 \in Q$ let $\Agentset_{q_1, q_2}$ be the set of agents with datum $d$ that start in $q_1$ and end in $q_2$.
+	We define the ""shadow"" of $d$ in $\run$ as the function $\shadow{d}{\run} : Q^2 \to \nats \cup \set{\bot}$ such that for all $q_1, q_2 \in Q$, 
+	\begin{equation}
+		\shadow{d}{\run}(q_1, q_2) = 
+		\left\{
+		\begin{aligned}
+			&\bot &\text{ if } \Agentset_{q_1,q_2} =\emptyset\\
+			&\size{\Agentset_o \cap \Agentset_{q_1, q_2}} &\text{ otherwise.}
+		\end{aligned}
+		\right.
+	\end{equation}
+\end{definition}
+%	
+The "shadow" of $d$ describes the flow of its agents between states in the "run". For each pair of states $q_1, q_2$ it indicates if some agents of $d$ started in $q_1$ and ended in $q_2$ and counts the "observed" ones among them. The idea is that if two data $d, d'$ have the same "shadow" in $\run$ and no agent of $d'$ is "externally observed", then we can make each agents of $d'$ copycat an agent of $d$ so that in the end they all reach the same end configuration.
+
+
+\begin{lemma}
+	\label{lem:bound-observed-data}
+	Let $\run : \config_0 \to \config_2 \to \cdots \to \config_m$ be a "run"  over a set of data $\Dataset_{\run}$, and let $K$ be such that there are at most $K$ "observed" agents of each datum "observed" in the "run". There exists another "run" $\run' : \config_0 \xrightarrow{*} \config_m$ and a subset of data $\Dataset_{\run'}$ such that:
+	\begin{itemize}
+		\item for all agents $a$ of datum $d \in \Dataset_{\run'}$, $\config_1(a) = \config'_1(a)$ and $\config_2(a) = \config'_2(a)$,
+		
+		\item for all $d \in \Dataset_{\run}$, there exists $d' \in \Dataset_{\run'}$ such that $\shadow{d'}{\run'} = \shadow{d}{\run}$.
+		
+		\item $\size{\Dataset_{\run'}} \leq 4(K+2)^{2\size{Q}^2}$.
+	\end{itemize}
+\end{lemma}
+
+
+\begin{proof}
+	We proceed similarly to the proof of \cref{lem:bound-observed-agent}. 
+	Let $\Dataset_\run$ be the set of data appearing in $\run$.
+	For all $d$ let $\Agentset_d$ be its set of agents and $\Agentset_{d,o}$ the subset of those agents that are "observed" at some point in the "run".
+	
+	As no more than $K$ agents of each datum are "observed" through $\run$ that the "shadows" of all data are bounded by $K$ and thus there are at most $(K+2)^{\size{Q}^2}$ different ones. This also holds for all prefixes and suffixes of $\run$.
+	
+	Let $M=(K+2)^{2\size{Q}^2}$. 
+	For all $d \in \Dataset_\run$ and $i \in \nset{1}{m}$ we define $\sigma(d,i) = (\shadow{d}{\prefixrun{\run}{i}}, \shadow{d}{\suffixrun{\run}{i}})$. 
+	
+	We now lift the proof of \cref{lem:bound-observed-agent} from agents to data.
+	Let $\ashadow : Q^2 \to \nset{0}{K}\cup \bot$ and let $\Dataset_{\ashadow} = \set{d \in \Dataset_{\run} \mid \shadow{d}{\run} = \ashadow}$. 
+	Suppose $\size{\Dataset_{\ashadow}} \geq 4M$. 
+	Let $S = \set{\sigma(d,i) \mid d \in \Dataset_{\ashadow}, i\in\nset{1}{m}}$. Note that $\size{S}\leq M$.
+	
+	For each $s \in S$ define $\alpha_s$ as the datum reaching $s$ first in $\run$ and $\beta_s$ as the last one.
+	Then as $\size{\Dataset_{\ashadow}}\geq 4M$, we can pick for each $s \in S$ data $d_s, e_s \in \Dataset_{\ashadow}$ and such that the $(d_s)_{s\in S}, (e_s)_{s\in S}$ are disjoint and disjoint from the $(\alpha_s)_{s\in S}$ and $(\beta_s)_{s\in S}$.
+	
+	We create a new "run" $\overline{\run}$ where all agents with datum in $\set{\alpha_s, \beta_s \mid s \in S} \cup (\Dataset \setminus \Dataset_{\ashadow})$ behave the same. 
+	The agents with datum in $\Dataset_{\ashadow} \setminus \set{\alpha_s, \beta_s, d_s, e_s \mid s \in S}$ are deleted.
+	
+	Let $s = (\ashadow_1, \ashadow_2) \in S$, we make agents of $d_s$ and $e_s$ and $e_s$ follow the ones of $\alpha_s$, then stay idle until $\beta_s$ last reaches $s$, and then follow $\beta_s$.
+	This is possible as they have the same "shadows", hence we can match "observed" agents of $d_s$ (and $e_s$) to the ones of $\alpha_s$ (resp. $\beta_s$) one-to-one while preserving the states of departure and arrival, and the "non-observed" of $d_s$ and $e_s$ can follow agents of $\alpha_s$ (resp. $\beta_s$) that have the same starting and finishing states.
+	
+	When an agent with datum $d$ is "externally observed" at step $i$ in $\run$, we consider $s = \sigma(d,i)$ and make the moving agent "observe" $d_s$ or $e_s$ instead (one of them has to be different from $d$).
+\end{proof}
+
+\begin{corollary}
+	For all "run" $\run : \config_1 \xrightarrow{*} \config_2$, there exists a "run" $\Tilde{\run} : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$,at most $\size{Q}^3$ agents with datum $d$ are "observed" in $\run$, and agents of at most $4(3\size{Q}^3+2)^{2\size{Q}^2}$ different data are "observed".
+\end{corollary}
