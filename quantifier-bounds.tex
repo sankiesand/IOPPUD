@@ -9,7 +9,7 @@
 \end{definition}
 
 \begin{definition}
-	Let $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$ be a "specification". We define the following game between two players (called Eve and Adam.\cortoin{Spoiler/Duplicator?})
+	Let $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$ be a "specification". We define the following game between two players (called Eve and Adam).\cortoin{Spoiler/Duplicator?}
 	
 	The game goes as follows: for each $i \in \nset{1}{p}$, iteratively, a player (Eve if $Q_i = \exists$, Adam otherwise) chooses a "configuration" $\config_i$. 
 	If $i>1$, that "configuration" must be in $\Reach(\config_{i-1})$. If it is not, the player loses.
