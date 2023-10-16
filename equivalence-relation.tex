@@ -1,18 +1,54 @@
 \section{Equivalence relation}
 \label{sec:equivalence-relation}
 
-Given a configuration $\config$ and a datum $d \in \Dataset$, we define the $n$-approximation of $d$ in $\config$ as the vector $\dataapprox{n}{\config}{d} : Q \to \nset{0}{n}$ such that for all $q\in Q$, $\dataapprox{n}{\config}{d}(q)=\min(\size{\set{a \in \Agentset \mid \config(a)= (q,d)}},n)$.
+Given a configuration $\config$ and a datum $d \in \Dataset$, we define the $n$-approximation of $d$ in $\config$ as the vector $\dataapprox{n}{\config}{d} : Q \to \nset{0}{n}$ such that for all $q\in Q$, $\dataapprox{n}{\config}{d}(q)=\min(\counting{\config}(d)(q),n)$.
+
+For all $n \in \nats$ we define the following equivalence relations on $\configset \times \Dataset$: 
+
+For all $(\config_1, d_1), (\config_2, d_2) \in \configset\times \Dataset$, we have $(\config_1, d_1) \intro*\dataequiv{n} (\config_2, d_2)$ if and only if $\dataapprox{n}{\config_1}{d_1} = \dataapprox{n}{\config_2}{d_2}$.
+
+
 
 We denote the set of all \textbf{non-zero} $n$-approximations by $\DataApproxSet{n}$
 Similarly, we define the $(n,M)$-approximation of a configuration $\config$ as the vector $\configapprox{n}{M}{\config} : \DataApproxSet{n} \to \nset{0}{M}$ such that for all $v\in \DataApproxSet{n}$,
 $\configapprox{n}{M}{\config}(v) = \min(\size{\set{d \in \nats \mid \dataapprox{n}{\config}{d} = v}},M)$.
 
+For all $n, M \in \nats$ we define the following equivalence relations on configurations: 
 
-For all $n, M \in \nats$ we define the following equivalence relation on configurations: 
-For all $\config_1, \config_2$, we have $\config_1 \equiv_{n,M} \config_2$ if and only if $\configapprox{n}{M}{\config_1} = \configapprox{n}{M}{\config_2}$.
-
-
+For all $\config_1, \config_2$, we have $\config_1 \intro*\configequiv{n}{M} \config_2$ if and only if $\configapprox{n}{M}{\config_1} = \configapprox{n}{M}{\config_2}$.
 
 \begin{lemma}
-	For all $n, M \in \nats$, for all configurations $\config_1, \config_2, \config_1'$, if there is a run $\run : \config_1 \xrightarrow{*} \config_2$ and $\config_1 \equiv_{n\size{Q}+3\size{Q}^3,Mn\size{Q}+\size{Q}^{3\size{Q}^3}} \config'_1$ then there exists $\config'_2$ such that $\config'_2 \equiv_{n,M} \config_2$ and there is a run $\run' : \config_1' \xrightarrow{*} \config_2'$.
+	Let $n,M \in \nats$ and $\config, \chi$ be configurations such that $\config \equiv_{n,M} \chi$, and let $\psi$ a predicate with at most $M$ variables and such that all bounds appearing in inequalities are at most $n$.
+	Then $\config$ satisfies $\psi$ if and only if $\chi$ does.  
 \end{lemma}
+
+
+For all $n, M \in \nats$ let $f(n) = (n+3\size{Q}^3)\size{Q}$ and $g(n,M) = (M+4(3\size{Q}^3+2)^{\size{Q}^2})(n+1)^{\size{Q}}$.
+
+\begin{lemma}
+	For all $n, M \in \nats$, for all configurations $\config_1, \config_2, \chi_1$, if there is a run $\run : \config_1 \xrightarrow{*} \config_2$ and $\config_1 \equiv_{f(n),g(n,M)} \chi_1$ then there exist $\chi_2$ such that $\chi_2 \equiv_{n,M} \config_2$ and a run $\pi : \chi_1 \xrightarrow{*} \chi_2$.
+\end{lemma}
+
+\begin{proof}
+	Let us fix $K=3\size{Q}^3$. By \cref{cor:run-few-observed-data-and-agents}, there exists a run $\run' : \config_1 \xrightarrow{*} \config_2$, with $\leq K$ agents per datum and $\leq 4(K+2)^{2\size{Q}^2}$ data.
+	
+	We are going to define maps $\mu : \Dataset(\chi_1) \to \Dataset(\config_1)$ and $\nu : \Agentset(\chi_1) \to \Agentset(\config_1)$.
+	
+	We start with $\mu$: For all $\equiv_{f(n)}$-equivalence class $E$ and $\equiv_{n}$-equivalence class $F$, we write $\Dataset_{E,F}$ for the set of data $d \in \Dataset(\config_1)$ such that $(\config_1, d) \in E$ and $(\config_2, d) \in F$.
+	
+	We then define a subset $\overline{\Dataset_{E,F}}$ of data.
+	If $\size{\Dataset_{E,F}} \leq M$ we set $\Dataset_{E,F} = \overline{\Dataset_{E,F}}$. Otherwise, we select a subset of $M$ arbitrary elements, to which we add all data in $\Dataset_{E,F}$ that are "observed" in $\run'$ to get $\overline{\Dataset_{E,F}}$.
+	In the end we get a subset $\overline{\Dataset_{E,F}}$ of $\Dataset_{E,F}$ of size at most $M+4(K+2)^{2\size{Q}^2}$.
+	
+	For all $\equiv_{f(n)}$-equivalence class $E$, we define $\overline{\Dataset_{E}} = \bigcup_{F\text{ an }\equiv_n-\text{equivalence class}} \overline{\Dataset_{E,F}}$, which is a set of size at most $(M+4(K+2)^{2\size{Q}^2})(n+1)^{\size{Q}} = g(n,M)$, as there are $(n+1)^{\size{Q}}$ $\equiv_n$-equivalence classes.
+	
+ Since $\config_1 \equiv_{f(n),g(n,M)} \chi_1$, there must be at least $\size{\overline{\Dataset_{E}}}$ data in $E \cap \Dataset(\chi_1)$. We can thus map each datum in $E \cap \Dataset(\chi_1)$ to one in $\overline{\Dataset_{E}}$ so that all $d \in \overline{\Dataset_{E}}$ have an antecedent.
+ 
+ We define $\mu$ as this mapping on all equivalence classes $E$.
+	
+For $\nu$, let $d \in \Dataset(\chi_1)$. We have, by definition of $\mu$, $\chi_1, d \equiv_{f(n)} \config_1, \mu(d)$. Like before, we define $\Agentset_{ q_1, q_2}$ as the set of agents with datum $\mu(d)$ that are in $q_1$ in $\config_1$ and $q_2$ in $\config_2$.
+We then define a subset $\overline{\Agentset_{q_1, q_2}}$ of those agents. If $\size{\Agentset_{q_1, q_2}} \geq n$, then $\overline{\Agentset_{q_1, q_2}} = \Agentset_{q_1, q_2}$. Otherwise, we select a set of $n$ agents in $\Agentset_{q_1, q_2}$ and add all agents of $\Agentset_{q_1, q_2}$ "observed" in $\run'$ to it. In both cases $\size{\overline{\Agentset_{q_1, q_2}}} \leq n+3\size{Q}^3$.
+We then set $\overline{\Agentset_{q_1}} = \bigcup_{q_2 \in Q} \overline{\Agentset_{q_1, q_2}}$. Clearly $\size{\overline{\Agentset_{q_1}}} \leq \size{Q}(n+3\size{Q}^3)=f(n)$. 
+
+\cortoin{To be continued}
+\end{proof}

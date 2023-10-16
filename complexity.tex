@@ -1,2 +1,26 @@
 \section{Complexity}
 \label{sec:complexity}
+
+\begin{proposition}
+	The following problem is decidable in \pspace:
+	Given a "PPUD" $\mathcal{P}$ and two "configurations" $\config_1, \config_2$, is there a "run" from $\config_1$ to $\config_2$?
+\end{proposition}
+
+
+
+
+\begin{theorem}
+	The following problem is decidable in \exps for all fixed $k$:
+	
+	Given an "IOPPUD" $\mathcal{P}$ and a "specification" $\phi$ with $k$ quantifiers, does $\mathcal{P}$ satisfy $\phi$?
+\end{theorem}
+
+\begin{corollary}
+	Correctness and well-specification are decidable in \exps for "IOPPUD".
+\end{corollary}
+
+\begin{theorem}
+	The following problem is undecidable:
+	
+	Given a "PPUD" $\mathcal{P}$, is $\mathcal{P}$ well-specified?
+\end{theorem}

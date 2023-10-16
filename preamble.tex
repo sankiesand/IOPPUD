@@ -46,24 +46,31 @@
 \newcommand{\prot}{\mathcal{P}} %protocol
 \newcommand{\trans}[2]{\xrightarrow{#2 #1}}
 
+
 \newcommand{\Agentset}{\mathbb{A}}
 \newcommand{\Dataset}{\mathbb{D}}
 \knowledgenewrobustcmd{\dataof}{\cmdkl{\mathbf{data}}}
 \newcommand{\form}{\mathbf{f}}
-\newcommand{\formset}{\nats^Q_{\neq 0}}
 \newcommand{\config}{\gamma}
+\newcommand{\counting}[1]{#1^{\#}}
 \knowledgenewrobustcmd{\configset}{\cmdkl{\Gamma}}
-
 
 \newcommand{\step}[3]{{\mathop{\xrightarrow{#1 #3}}}_{#2}}
 \newcommand{\run}{\rho}
-\newcommand{\prefixrun}[2]{#1[\to \hspace{-2pt} #2]}
-\newcommand{\suffixrun}[2]{#1[#2\hspace{-2pt} \to]}
+\newcommand{\prefixrun}[2]{#1[\to #2]}
+\newcommand{\suffixrun}[2]{#1[#2 \to]}
+\newcommand{\trace}[2]{\mathtt{tr}_{#1,#2}}
+\newcommand{\atrace}{tr}
 \newcommand{\shadow}[2]{\mathtt{sh}_{#1,#2}}
 \newcommand{\ashadow}{sh}
 
 \newcommand{\dataapprox}[3]{\overline{#2, #3}^{#1}}
 \newcommand{\configapprox}[3]{\overline{#3}^{#1, #2}}
+
+\knowledgenewrobustcmd{\dataequiv}[1]{\cmdkl{\equiv}_{#1}}
+\knowledgenewrobustcmd{\configequiv}[2]{\cmdkl{\equiv}_{#1, #2}}
+
+
 
 \newcommand{\DataApproxSet}[1]{\mathbf{DA}_{#1}}
 
