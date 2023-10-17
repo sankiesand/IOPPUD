@@ -41,13 +41,7 @@
 	In total, for all $d$, at most $3\size{Q}^3$ agents per datum remain.
 \end{proof}
 
-\begin{corollary}
-	For all "run" $\run : \config_1 \xrightarrow{*} \config_2$, there exists a "run" $\Tilde{\run} : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$,at most $3\size{Q}^3$ agents with datum $d$ are "observed" in $\run$.
-\end{corollary}
 
-\begin{proof}
-	Take the "run" $\run'$ from~\cref{lem:agents-core-lemma} and add the missing agents by making them copycat an agent with the same datum, initial and final state from $\Agentset_{\run'}$. Such an agent exists by the second item of the lemma.
-\end{proof}
 
 \begin{lemma}[Agents copycat lemma]
 	\label{lem:agents-copycat}
@@ -74,6 +68,14 @@
 	For the third one, observe that $\Tilde{a}$ did not appear in $\run$ and that we did not add any transition where $\Tilde{a}$ is observed.
 \end{proof}
 
+
+\begin{corollary}
+	For all "run" $\run : \config_1 \xrightarrow{*} \config_2$, there exists a "run" $\Tilde{\run} : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$,at most $3\size{Q}^3$ agents with datum $d$ are "observed" in $\run$.
+\end{corollary}
+
+\begin{proof}
+	Take the "run" $\run'$ from~\cref{lem:agents-core-lemma} and add the missing agents using \cref{lem:agents-copycat} by making them copycat an agent with the same datum, initial and final state from $\Agentset_{\run'}$. Such an agent exists by the second item of the lemma.
+\end{proof}
 
 \subsection{Bounds on the number of observed data}
 

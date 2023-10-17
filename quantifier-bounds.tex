@@ -3,12 +3,6 @@
 
 
 \begin{definition}
-	A ""predicate"" is a boolean combination of formulas of the form $\exists d_1, \ldots, d_k, \psi$ with $\psi$ a boolean combination of inequalities of the form $\#(q,d_i) \leq B$ with $q\in Q$, $i \in \nset{1}{k}$ and $B \in \nats$.
-	
-	A ""specification"" is a formula of the form $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$, where for each $i \in \nset{1}{p}$, $Q_i$ is a quantifier and $\phi$ is a boolean combination of pairs $(\config_i, \psi)$ with $i \in \nset{1}{p}$ and $\psi$ a "predicate".
-\end{definition}
-
-\begin{definition}
 	Let $Q_1 \config_1, Q_2 \config_2  \in \Reach(\config_1), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$ be a "specification". We define the following game between two players (called Eve and Adam).\cortoin{Spoiler/Duplicator?}
 	
 	The game goes as follows: for each $i \in \nset{1}{p}$, iteratively, a player (Eve if $Q_i = \exists$, Adam otherwise) chooses a "configuration" $\config_i$. 
