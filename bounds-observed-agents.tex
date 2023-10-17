@@ -52,7 +52,7 @@ let $\bunchreach$ be the set of states visited by agents of $\Agentset^d_{q_1, q
 We are going to define a family $(a_q)_{q \in \bunchreach}$ of agents in $\Agentset^d_{q_1, q_2}$ 
 such that the run with only  $(a_q)_{q \in \bunchreach}$ in $\Agentset^d_{q_1, q_2}$ 
 and equal to $\run$ everywhere else is still a valid run,
-Repeating the operation for every ($\size{Q}^2$) set of agents $\Agentset^d_{q_1, q_2}$
+Repeating the operation for every set of agents $\Agentset^d_{q_1, q_2}$
 will yield a run fulfilling the Lemma conditions.
 
 For all $q \in \bunchreach$, 
@@ -83,7 +83,7 @@ we obtain a "run" $\run'$ in which for all $d$, $q_1$, $q_2$,
 at most $\size{Q}$ agents going from $q_1$ to $q_2$ with datum $d$ remain 
 In total, for all $d$, at most $\size{Q}^3$ agents per datum remain.
 \chana{tbd: show $\run'$ fulfills the lemma conditions}
-\chana{other option: for all $d$, treat $\run_d$ (only the $d$-agents of $\run$) as a classic IO run, and apply the results of \cite{EsparzaRW2019}}
+\chanain{other option: for all $d$, treat $\run_d$ (only the $d$-agents of $\run$) as a classic IO run, and apply the results of \cite{EsparzaRW2019}}
 \end{proof}
 
 
