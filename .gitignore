@@ -1,5 +1,9 @@
 *.diagnose
 *.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
 *.kaux
 *.log
 *.out
