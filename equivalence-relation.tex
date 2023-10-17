@@ -4,7 +4,6 @@
 Given a configuration $\config$ and a datum $d \in \Dataset$, we define the $n$-approximation of $d$ in $\config$ as the vector $\dataapprox{n}{\config}{d} : Q \to \nset{0}{n}$ such that for all $q\in Q$, $\dataapprox{n}{\config}{d}(q)=\min(\counting{\config}(d)(q),n)$.
 
 For all $n \in \nats$ we define the following equivalence relations on $\configset \times \Dataset$: 
-
 For all $(\config_1, d_1), (\config_2, d_2) \in \configset\times \Dataset$, we have $(\config_1, d_1) \intro*\dataequiv{n} (\config_2, d_2)$ if and only if $\dataapprox{n}{\config_1}{d_1} = \dataapprox{n}{\config_2}{d_2}$.
 
 
