@@ -4,9 +4,10 @@
 
 \begin{definition}
 	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run".
-	We say that agent $a_0$ is ""internally observed"" in $\run$ if $\run$ contains a step of the form $\config_1 \step{=}{a}{a_o} \config_2$, and ""externally observed"" if $\run$ contains a step of the form $\config_1 \step{\neq}{a}{a_o} \config_2$.
+	We say that agent $a_0$ is ""internally observed"" in $\run$ if $\run$ contains a step of the form $\config_1 \step{=}{a}{a_o} \config_2$, and we say that $a_0$ is ""externally observed"" if $\run$ contains a step of the form $\config_1 \step{\neq}{a}{a_o} \config_2$.
 	We say that $a_o$ is ""observed"" in $\run$ if it is either "internally" or "externally observed", and that a datum $d$ is observed if an agent $a$ with $\dataof(a) =d$ is. 
 \end{definition}
+\steffenin{Already used above. Move right before Definition 2?}
 
 \subsection{Bounds on the number of observed agents per datum}
 

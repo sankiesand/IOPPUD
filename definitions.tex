@@ -12,32 +12,34 @@
 	We will denote such transitions by $q_2 \trans{q_1}{\sim} q_3$.
 \end{definition}
 
-We fix an infinite data domain $\Dataset$, an infinite set of agents $\Agentset$ and a function $\intro*\dataof : \Agentset \to \Dataset$ such that $\dataof^{-1}(d)$ is infinite for all $d \in \Dataset$. 
+We fix an infinite data domain $\Dataset$, an infinite set of agents $\Agentset$ and a function $\intro*\dataof : \Agentset \to \Dataset$ such that $\dataof^{-1}(d)$ is infinite for all $d \in \Dataset$.
 
 
 
-A ""configuration"" is a function $\config : \Agentset \to Q \cup \set{\bot}$. We write $\intro*\configset$ for the set of all "configurations". Given a configuration $\config$, we define $\counting{\config} : \Dataset \to \nats^Q$ such that for all $d \in \Dataset, q \in Q$, $\counting{\config}(d)(q) = \size{\set{a \in \Agentset \mid \dataof(a) = d \land \config(a) =q}}$.
+A ""configuration"" is a function $\config \colon \Agentset \to Q \cup \set{\bot}$.\steffen{such that $\config(a) \in Q$ for only finitely many $a \in \Agentset$? Otherwise, this could lead to problems below.} We write $\intro*\configset$ for the set of all "configurations". Given a configuration $\config$, we define $\counting{\config} \colon \Dataset \to \nats^Q$ such that for all $d \in \Dataset$ and $q \in Q$, it holds that $\counting{\config}(d)(q) = \size{\set{a \in \Agentset \mid \dataof(a) = d \land \config(a) =q}}$\steffen{Replaced $:$ by $\colon$. Also everyhwere below?}.
 
 
-A ""step"" $\config_1 \step{\sim}{a}{a_o} \config_2$ with $\config_1, \config_2 \in \configset$, $\sim~ \in \set{=, \neq}$ and $a, a_o \in \Agentset$ is defined when there exists  $\delta = q_1 \trans{q}{\sim} q_2 \in \Delta$ and $d, d_o \in \Dataset$ such that $\config_1(a) = (q_1, d)$, $\config_2(a) = (q_2, d)$ and $\config_1(a_o) = \config_2(a_o) = (q, d_o)$ and $\config_1(a') = \config_2(a')$ for all $a' \neq a$, and $d \sim d_o$.
-We say that agent $a$ ""observes"" agent $a_o$. 
+A ""step"" $\config_1 \step{\sim}{a}{a_o} \config_2$ with $\config_1, \config_2 \in \configset$, $\sim~ \in \set{=, \neq}$ and $a, a_o \in \Agentset$ is defined when there exists  $\delta = q_1 \trans{q}{\sim} q_2 \in \Delta$ and $d, d_o \in \Dataset$ such that $\config_1(a) = (q_1, d)$\steffen{$\config_1(a) = q_1$, $\dataof(a) = d$? Also everywhere else in this paragraph.}, $\config_2(a) = (q_2, d)$ and $\config_1(a_o) = \config_2(a_o) = (q, d_o)$ and $\config_1(a') = \config_2(a')$ for all $a' \neq a$, and $d \sim d_o$.
+\steffenin{Alternative: For every $\config_1, \config_2 \in \configset$, $\sim~ \in \set{=, \neq}$, and $a, a_o \in \Agentset$, we write $\config_1 \step{\sim}{a}{a_o} \config_2$, called a ""step"", to say that there exists $\delta = q_1 \trans{q}{\sim} q_2 \in \Delta$ such that $\config_1(a) = q_1$, $\config_2(a) = q_2$, $\config_1(a_o) = \config_2(a_o) = q$, $\config_1(a') = \config_2(a')$ for all $a' \in \Agentset \setminus \{a\}$, and $\dataof(a) \sim \dataof(a_o)$.}
+We say that agent $a$ ""observes"" agent $a_o$.
 We will write $\config_1 \to \config_2$ to say that there exist $a, a_0$ and $\sim$ such that $\config_1 \step{\sim}{a}{a_o} \config_2$.
 
-A ""run"" $\run$ is a sequence of consecutive "steps" $\run: \config_0 \to \config_1 \to \cdots \to  \config_m$.
-Further, for all $i \in \nset{1}{m}$, we define the prefix run $\prefixrun{\run}{i} = \config_0 \to \config_1 \to \cdots \to  \config_i$ and suffix run $\suffixrun{\run}{i} = \config_i \to \config_{i+1} \to \cdots \to  \config_m$. We write $\run : \config \xrightarrow{*} \config'$ to say that $\run$ goes from $\config$ to $\config'$. 
+A ""run"" $\run$ is a sequence of consecutive "steps" $\run: \config_0 \to \config_1 \to \cdots \to  \config_m$.\steffen{$\run:$ or $\run =$? Consistent with prefix runs?}
+Further, for all $i \in \nset{1}{m}$, we define the prefix run $\prefixrun{\run}{i} = \config_0 \to \config_1 \to \cdots \to  \config_i$ and suffix run $\suffixrun{\run}{i} = \config_i \to \config_{i+1} \to \cdots \to  \config_m$. We write $\run : \config \xrightarrow{*} \config'$ to say that $\run$ goes from $\config$ to $\config'$.\steffen{We write $\run : \config \xrightarrow{*} \config'$ to say that there are $m \in \nats$ and $\config_0, \dots, \config_m \in \configset$ such that $\config = \config_0$, $\config' = \config_m$, and $\run: \config_0 \to \config_1 \to \cdots \to \config_m$? (or $\run = \dots$?)}
 
-We also define for all "configurations" $\config$ the set $\Reach(\config) = \set{\config' \in \configset \mid \exists \run : \config \xrightarrow{*} \config'}$.
+For all "configurations" $\config$, we let $\Reach(\config) \coloneqq \set{\config' \in \configset \mid \exists \run : \config \xrightarrow{*} \config'}$.
 
 
 \begin{definition}
-	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run", $d\in \Dataset$, $\Agentset^d_o$ the agents with datum $d$ that are "observed" in $\run$. For all $q_1, q_2 \in Q$ let $\Agentset^d_{q_1, q_2}$ be the set of agents with datum $d$ that start in $q_1$ and end in $q_2$.
+	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run", $d\in \Dataset$, and let $\Agentset^d_o$ be the agents with datum $d$ that are "observed" in $\run$. For all $q_1, q_2 \in Q$ let $\Agentset^d_{q_1, q_2}$ be the set of agents with datum $d$ that start in $q_1$ and end in $q_2$, that is, $\Agentset^d_{q_1, q_2} = \bigl\{a \in \Agentset \ \mid \ \dataof(a) = d, \config_1(a) = q_1, \config_2(a) = q_2\bigr\}$.
+	\steffen{Below, we use the definitions for different runs. Include $\run$ in the notation somewhere? Maybe $\Agentset^{\rho, d}_{q_1, q_2}$}
 	
 	We define the ""trace"" of $d$ in $\run$ as the function $\trace{d}{\run} : Q^2 \to \nats$ such that for all $q_1, q_2 \in Q$,	$\trace{d}{\run}(q_1, q_2) = \size{\Agentset^d_{q_1, q_2}}$
 		
 	
-	\AP We define the ""shadow"" of $d$ in $\run$ as the function $\shadow{d}{\run} : Q^2 \to \nats \cup \set{\bot}$ such that for all $q_1, q_2 \in Q$, 
+	\AP We define the ""shadow"" of $d$ in $\run$ as the function $\shadow{d}{\run} : Q^2 \to \nats \cup \set{\bot}$ such that for all $q_1, q_2 \in Q$,
 	\begin{equation}
-		\shadow{d}{\run}(q_1, q_2) = 
+		\shadow{d}{\run}(q_1, q_2) =
 		\left\{
 		\begin{aligned}
 			&\bot &\text{ if } \Agentset^d_{q_1,q_2} =\emptyset\\
@@ -48,15 +50,17 @@ We also define for all "configurations" $\config$ the set $\Reach(\config) = \se
 \end{definition}
 %	
 The "trace" and "shadow" of $d$ describe the flow of its agents between states in the "run". For each pair of states $q_1, q_2$, the "trace" counts the number of agents going from $q_1$ to $q_2$ while
-the "shadow" simply indicates if some agents went from $q_1$ to $q_2$ and counts the "observed" ones among them. The idea behind the "shadow" is that if two data $d, d'$ have the same "shadow" in $\run$ and no agent of $d'$ is "externally observed", then we can make each agent of $d'$ copycat an agent of $d$ so that in the end they all reach the same end configuration.
+the "shadow" simply indicates if some agents went from $q_1$ to $q_2$ and counts the "observed" ones among them. The idea behind the "shadow" is that if two data $d, d'$ have the same "shadow" in $\run$ and no agent of $d'$ is "externally observed"\steffen{only defined below}, then we can make each agent of $d'$ copycat\steffen{not defined yet} an agent of $d$ so that in the end, they all reach the same end configuration\steffen{“Reaching the same configuration” sounds a bit fishy.}.
 
 
 \begin{definition}
-	A ""predicate"" is a boolean combination of formulas of the form $\exists datum_1, \ldots, datum_k, \psi$ with $\psi$ a boolean combination of inequalities of the form $\#(q,datum_i) \leq B$ with $q\in Q$, $i \in \nset{1}{k}$ and $B \in \nats$.
+	A ""predicate"" is a Boolean combination of formulas of the form $\exists datum_1, \ldots, datum_k, \psi$, where $\psi$ is a Boolean combination of inequalities of the form $\#(q,datum_i) \leq B$ with $q\in Q$, $i \in \nset{1}{k}$, and $B \in \nats$.
+	\steffen{shorten $datum_i$? (I don't have a good idea, yet)}
 	
-	A ""specification"" is a formula of the form $Q_1 \config_1  \in \Reach(\config_0), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$, where $\config_0, \ldots, \config_{p}$ are variables and for each $i \in \nset{1}{p}$, $Q_i$ is a quantifier and $\phi$ is a boolean combination of pairs $(\config_i, \psi)$ with $i \in \nset{1}{p}$ and $\psi$ a "predicate".
+	A ""specification"" is a formula of the form $Q_1 \config_1  \in \Reach(\config_0), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$, where $\config_0, \ldots, \config_{p}$ are variables, $Q_i$ is a quantifier\steffen{$Q_i \in \{\exists,\forall\}$?} for all $i \in \nset{1}{p}$, and $\phi$ is a Boolean combination of pairs $(\config_i, \psi)$ with $i \in \nset{1}{p}$ and $\psi$ a "predicate".
 	
 	\cortoin{Shape to discuss}
 \end{definition}
 
 A "predicate" $\exists datum_1, \ldots, datum_k, \psi$ is ""satisfied"" by a configuration $\config$ if there exist \textbf{distinct} data $d_1, \ldots, d_n \in \Dataset$ such that $\psi$ is satisfied by replacing each $\#(q,datum_i) \leq B$ by $\top$ if $\counting{\config}(d_i)(q) \leq B$ and $\bot$ otherwise.
+\steffen{Move into the definition?}
