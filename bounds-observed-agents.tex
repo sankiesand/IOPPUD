@@ -1,3 +1,4 @@
+%!TEX root = main.tex
 \section{Bounds on the number of observed agents}
 \label{sec:bounds-observed-agents}
 
@@ -9,6 +10,9 @@
 
 \subsection{Bounds on the number of observed agents per datum}
 
+We call  ""trajectory"" of an agent $a$ in a run $\run=C_1 \xrightarrow{} C_2 \xrightarrow{} \ldots \xrightarrow{} C_n$ 
+the sequence $q_1 \ldots q_n$ of states of $Q$ such that  $C_i(a)=q_i$ for all $i$.
+
 \begin{lemma}[Agents core lemma]
 	\label{lem:agents-core-lemma}
 	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run" with $\Agentset_{\run}$ the set of agents appearing in it. There exists a "run" $\run' : \config'_1 \xrightarrow{*} \config'_2$ over a subset of agents $\Agentset_{\run'} \subseteq \Agentset_{\run}$ such that:
@@ -17,28 +21,69 @@
 		
 		\item and for all $d \in \Dataset$, $q_1, q_2 \in Q$, if there exists an agent in $\Agentset_{\run}$ such that $\config_1(a) = (q_1, d)$ and $\config_2(a) = (q_2, d)$ then there is such an agent in $\Agentset_{\run'}$.
 		
-		\item For all $d \in \Dataset$, there are at most $3\size{Q}^3$ agents with datum $d$ in $\Agentset_{\run'}$.
-		\cortoin{we can achieve $\size{Q}^3$ but I think it makes the proof a little more technical}
+		\item For all $d \in \Dataset$, there are at most $\size{Q}^3$ agents with datum $d$ in $\Agentset_{\run'}$.
+		%\cortoin{we can achieve $\size{Q}^3$ but I think it makes the proof a little more technical}
 	\end{itemize}
 \end{lemma}
 
 \begin{proof}
-	We mimic the \emph{bunch} argument from \cite{EsparzaRW2019}. 
-	Let $d\in \Dataset$ a datum appearing in $\run$, and let $q_1, q_2 \in Q$, and $\Agentset_{d, q_1, q_2} = \set{a \in \Agentset_{\run} \mid \dataof(a) = d, \config_1(a) = q_1, \config_2(a) = q_2}$. Suppose $\size{\Agentset_{d, q_1, q_2}} \geq 3\size{Q}$, then let $S$ be the set of states visited by agents of $\Agentset_{d, q_1, q_2}$ in $\run$.
+%	We mimic the \emph{bunch} argument from \cite{EsparzaRW2019}. 
+%	Let $d\in \Dataset$ a datum appearing in $\run$, and let $q_1, q_2 \in Q$, and $\Agentset^d_{q_1, q_2} = \set{a \in \Agentset_{\run} \mid \dataof(a) = d, \config_1(a) = q_1, \config_2(a) = q_2}$. Suppose $\size{\Agentset^d_{q_1, q_2}} \geq 3\size{Q}$, then let $S$ be the set of states visited by agents of $\Agentset^d_{q_1, q_2}$ in $\run$.
+%	
+%	For all $q \in S$ let $\alpha_q$ be the first agent of $\Agentset^d_{q_1, q_2}$ to reach $q$ (for $q_1$ we pick one arbitrarily), and $\beta_q$ the last one to leave it (we pick an arbitrary agent for $\beta_{q_2}$). 
+%	Note that those agents do not have to be distinct.
+%	
+%	We pick a family of distinct agents $(a_q)_{q \in S}$ in $\Agentset^d_{q_1, q_2}$ that is disjoint from $(\alpha_q)_{q \in S}$ and $(\beta_q)_{q \in S}$ (we can do so as $\size{\Agentset^d_{q_1, q_2}} \geq 3\size{Q}$).
+%	We define a new "run" $\overline{\run}$, where all agents not in $\Agentset^d_{q_1, q_2}$, as well as all $\alpha_q$ and $\beta_q$ behave the same. The agents of $\Agentset^d_{q_1, q_2}$ besides the $\alpha_q, \beta_q$ and $a_q$ are deleted.
+%	Each $a_q$ mimics the transitions taken by $\alpha_q$ until it reaches $q$, then stays idle until $\beta_q$ reaches $q$ for the last time, after which it mimics $\beta_q$. \cortoin{informal, formal proof by induction on the "run"}
+%	
+%	Whenever an agent "observes" an agent of $\Agentset_{q_1, q_2}$ in state $q$, as this must happen in $\run$ between the arrival of $\alpha_q$ and the departure of $\beta_q$, $a_q$ is in $q$ at this point in $\overline{\run}$ and can hence be "observed" instead. Therefore all "observations" are still possible, and only agents of $(a_{q})_{q\in S}$ are "observed" among $\Agentset_{q_1, q_2}$.
+%	
+%	The start and end "configurations" are the same as before for all remaining agents as all $a_q$ still go from $q_1$ to $q_2$, and other agents behave the same.
+%	
+%	By applying this transformation on all data appearing in $\run$ and all pairs of state $q_1, q_2$, we obtain a "run" $\run'$ in which for all $d$, $q_1$, $q_2$, at most $3\size{Q}$ agents going from $q_1$ to $q_2$ with datum $d$ remain (either there are less than $3\size{Q}$ such agents, or we ensured than at most $\size{Q}$ of them are "observed").
+%	In total, for all $d$, at most $3\size{Q}^3$ agents per datum remain.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   old proof above
+We mimic the \emph{bunch} argument from \cite{EsparzaRW2019}. \chana{old proof commented out}
+Let $\run$ be the run $\config_1=C_1 \xrightarrow{} C_2 \xrightarrow{} \ldots \xrightarrow{} C_n = \config_2$.
+Let $d\in \Dataset$ a datum appearing in $\run$,  let $q_1, q_2 \in Q$, 
+Suppose $\size{\Agentset^d_{q_1, q_2}} \geq \size{Q}$, and 
+let $\bunchreach$ be the set of states visited by agents of $\Agentset^d_{q_1, q_2}$.
+We are going to define a family $(a_q)_{q \in \bunchreach}$ of agents in $\Agentset^d_{q_1, q_2}$ 
+such that the run with only  $(a_q)_{q \in \bunchreach}$ in $\Agentset^d_{q_1, q_2}$ 
+and equal to $\run$ everywhere else is still a valid run,
+Repeating the operation for every ($\size{Q}^2$) set of agents $\Agentset^d_{q_1, q_2}$
+will yield a run fulfilling the Lemma conditions.
+
+For all $q \in \bunchreach$, 
+let $f$ be the first moment $q$ is reached in $\run$, 
+i.e. the minimal index such that there exists an $a\in \Agentset^d_{q_1, q_2}$
+with $C_f(a)=q$.
+Let $l$ be the last moment $q$ is reached in $\run$, 
+i.e. the maximal index such that there exists an $a\in \Agentset^d_{q_1, q_2}$
+with $C_l(a)=q$.
+Let $\alpha_q$ be one of the agent in $\Agentset^d_{q_1, q_2}$ that reaches $q$ first,
+i.e. $C_f(\alpha_q)=q$, and 
+let $\beta_q$ be one of the agent in $\Agentset^d_{q_1, q_2}$ that reaches $q$ last
+i.e. $C_l(\beta_q)=q$. 
+Note that these agents do not have to be distinct.
+We pick an agent $a_q \in \Agentset^d_{q_1, q_2}$ and modify its trajectory as follows.
+Agent $a_q$ mimics the transitions taken by $\alpha_q$ until $f$, 
+then stays idle until $l$, after which it mimics $\beta_q$. 
+We can choose the $a_q$ distinct for each $q\in \bunchreach$, since $\size{\Agentset^d_{q_1, q_2}} \geq \size{Q}$.
+
+We modify $\run$ by deleting all agents of $\Agentset^d_{q_1, q_2}$ that are not in $(a_q)_{q \in \bunchreach}$.
+This is still a valid run, because whenever an agent "observes" an agent of $\Agentset^d_{q_1, q_2}$ in state $q$, 
+ this must happen at moment $i$ between $f$ and $l$. 
+ Our definition of $a_q$'s trajectory ensures it  is in $q$ at $i$ and can hence be "observed" instead. 
+ Therefore all "observations" are still possible.
 	
-	For all $q \in S$ let $\alpha_q$ be the first agent of $\Agentset_{q_1, q_2}$ to reach $q$ (for $q_1$ we pick one arbitrarily), and $\beta_q$ the last one to leave it (we pick an arbitrary agent for $\beta_{q_2}$). 
-	Note that those agents do not have to be distinct.
-	
-	We pick a family of distinct agents $(a_q)_{q \in S}$ in $\Agentset_{d, q_1, q_2}$ that is disjoint from $(\alpha_q)_{q \in S}$ and $(\beta_q)_{q \in S}$ (we can do so as $\size{\Agentset_{d, q_1, q_2}} \geq 3\size{Q}$).
-	We define a new "run" $\overline{\run}$, where all agents not in $\Agentset_{d, q_1, q_2}$, as well as all $\alpha_q$ and $\beta_q$ behave the same. The agents of $\Agentset_{d, q_1, q_2}$ besides the $\alpha_q, \beta_q$ and $a_q$ are deleted.
-	Each $a_q$ mimics the transitions taken by $\alpha_q$ until it reaches $q$, then stays idle until $\beta_q$ reaches $q$ for the last time, after which it mimics $\beta_q$. \cortoin{informal, formal proof by induction on the "run"}
-	
-	Whenever an agent "observes" an agent of $\Agentset_{q_1, q_2}$ in state $q$, as this must happen in $\run$ between the arrival of $\alpha_q$ and the departure of $\beta_q$, $a_q$ is in $q$ at this point in $\overline{\run}$ and can hence be "observed" instead. Therefore all "observations" are still possible, and only agents of $(a_{q})_{q\in S}$ are "observed" among $\Agentset_{q_1, q_2}$.
-	
-	The start and end "configurations" are the same as before for all remaining agents as all $a_q$ still go from $q_1$ to $q_2$, and other agents behave the same.
-	
-	By applying this transformation on all data appearing in $\run$ and all pairs of state $q_1, q_2$, we obtain a "run" $\run'$ in which for all $d$, $q_1$, $q_2$, at most $3\size{Q}$ agents going from $q_1$ to $q_2$ with datum $d$ remain (either there are less than $3\size{Q}$ such agents, or we ensured than at most $\size{Q}$ of them are "observed").
-	In total, for all $d$, at most $3\size{Q}^3$ agents per datum remain.
+By applying this transformation on all data appearing in $\run$ and all pairs of state $q_1, q_2$, 
+we obtain a "run" $\run'$ in which for all $d$, $q_1$, $q_2$, 
+at most $\size{Q}$ agents going from $q_1$ to $q_2$ with datum $d$ remain 
+In total, for all $d$, at most $\size{Q}^3$ agents per datum remain.
+\chana{tbd: show $\run'$ fulfills the lemma conditions}
+\chana{other option: for all $d$, treat $\run_d$ (only the $d$-agents of $\run$) as a classic IO run, and apply the results of \cite{EsparzaRW2019}}
 \end{proof}
 
 \begin{corollary}

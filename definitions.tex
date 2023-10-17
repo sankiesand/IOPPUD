@@ -30,9 +30,9 @@ We also define for all "configurations" $\config$ the set $\Reach(\config) = \se
 
 
 \begin{definition}
-	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run", $d\in \Dataset$, $\Agentset_o$ the agents with datum $d$ that are "observed" in $\run$. For all $q_1, q_2 \in Q$ let $\Agentset_{q_1, q_2}$ be the set of agents with datum $d$ that start in $q_1$ and end in $q_2$.
+	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run", $d\in \Dataset$, $\Agentset^d_o$ the agents with datum $d$ that are "observed" in $\run$. For all $q_1, q_2 \in Q$ let $\Agentset^d_{q_1, q_2}$ be the set of agents with datum $d$ that start in $q_1$ and end in $q_2$.
 	
-	We define the ""trace"" of $d$ in $\run$ as the function $\trace{d}{\run} : Q^2 \to \nats$ such that for all $q_1, q_2 \in Q$,	$\trace{d}{\run}(q_1, q_2) = \size{\Agentset_{q_1, q_2}}$
+	We define the ""trace"" of $d$ in $\run$ as the function $\trace{d}{\run} : Q^2 \to \nats$ such that for all $q_1, q_2 \in Q$,	$\trace{d}{\run}(q_1, q_2) = \size{\Agentset^d_{q_1, q_2}}$
 		
 	
 	We define the ""shadow"" of $d$ in $\run$ as the function $\shadow{d}{\run} : Q^2 \to \nats \cup \set{\bot}$ such that for all $q_1, q_2 \in Q$, 
@@ -40,8 +40,8 @@ We also define for all "configurations" $\config$ the set $\Reach(\config) = \se
 		\shadow{d}{\run}(q_1, q_2) = 
 		\left\{
 		\begin{aligned}
-			&\bot &\text{ if } \Agentset_{q_1,q_2} =\emptyset\\
-			&\size{\Agentset_o \cap \Agentset_{q_1, q_2}} &\text{ otherwise.}
+			&\bot &\text{ if } \Agentset^d_{q_1,q_2} =\emptyset\\
+			&\size{\Agentset^d_o \cap \Agentset^d_{q_1, q_2}} &\text{ otherwise.}
 		\end{aligned}
 		\right.
 	\end{equation}
