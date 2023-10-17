@@ -57,7 +57,7 @@ the "shadow" simply indicates if some agents went from $q_1$ to $q_2$ and counts
 	A ""predicate"" is a Boolean combination of formulas of the form $\exists datum_1, \ldots, datum_k, \psi$, where $\psi$ is a Boolean combination of inequalities of the form $\#(q,datum_i) \leq B$ with $q\in Q$, $i \in \nset{1}{k}$, and $B \in \nats$.
 	\steffen{shorten $datum_i$? (I don't have a good idea, yet)}
 	
-	A ""specification"" is a formula of the form $Q_1 \config_1  \in \Reach(\config_0), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$, where $\config_0, \ldots, \config_{p}$ are variables, $Q_i$ is a quantifier\steffen{$Q_i \in \{\exists,\forall\}$?} for all $i \in \nset{1}{p}$, and $\phi$ is a Boolean combination of pairs $(\config_i, \psi)$ with $i \in \nset{1}{p}$ and $\psi$ a "predicate".
+	A ""specification"" is a formula of the form $Q_1 \config_1  \in \Reach(\config_0), \ldots, Q_p \config_p \in \Reach(\config_{p-1}), \phi$, where $\config_0, \ldots, \config_{p}$ are variables, $Q_i$ is a quantifier\steffen{$Q_i \in \{\exists,\forall\}$?} for all $i \in \nset{1}{p}$, and $\phi$ is a Boolean combination of pairs $(\config_i, \psi)$ with $i \in \nset{0}{p}$ and $\psi$ a "predicate".
 	
 	\cortoin{Shape to discuss}
 \end{definition}

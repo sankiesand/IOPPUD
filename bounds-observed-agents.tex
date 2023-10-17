@@ -118,7 +118,7 @@ In total, for all $d$, at most $\size{Q}^3$ agents per datum remain.
 
 
 \begin{corollary}
-	For all "run" $\run : \config_1 \xrightarrow{*} \config_2$, there exists a "run" $\Tilde{\run} : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$,at most $3\size{Q}^3$ agents with datum $d$ are "observed" in $\run$.
+	For every "run" $\run : \config_1 \xrightarrow{*} \config_2$, there exists a "run" $\Tilde{\run} : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$, at most $3\size{Q}^3$ agents with datum $d$ are "observed" in $\Tilde{\run}$.
 \end{corollary}
 
 \begin{proof}
@@ -129,9 +129,9 @@ In total, for all $d$, at most $\size{Q}^3$ agents per datum remain.
 
 \begin{lemma}[Data core lemma]
 	\label{lem:data-core-lemma}
-	Let $\run : \config_0 \to \config_2 \to \cdots \to \config_m$ be a "run"  over a set of data $\Dataset_{\run}$, and let $K$ be such that there are at most $K$ "observed" agents of each datum "observed" in the "run". There exists another "run" $\run' : \config_0 \xrightarrow{*} \config_m$ and a subset of data $\Dataset_{\run'}$ such that:
+	Let $\run : \config_1 \to \config_2 \to \cdots \to \config_m$ be a "run"  over a set of data $\Dataset_{\run}$, and let $K$ be such that there are at most $K$ "observed" agents of each datum "observed" in the "run". There exists a "run" $\run' : \config_0 \xrightarrow{*} \config_m$ and a subset of data $\Dataset_{\run'}$ such that:
 	\begin{itemize}
-		\item for all agents $a$ of datum $d \in \Dataset_{\run'}$, $\config_1(a) = \config'_1(a)$ and $\config_2(a) = \config'_2(a)$,
+		\item for all agents $a$ of datum $d \in \Dataset_{\run'}$, $\config_1(a) = \config'_1(a)$ and $\config_2(a) = \config'_2(a)$,\sandra{should this be $\gamma_i$ for all $i$?}
 		
 		\item for all $d \in \Dataset_{\run}$, there exists $d' \in \Dataset_{\run'}$ such that $\shadow{d'}{\run'} = \shadow{d}{\run}$.
 		
@@ -176,17 +176,17 @@ In total, for all $d$, at most $\size{Q}^3$ agents per datum remain.
 	\label{lem:data-copycat}
 	Let  $\run : \config_1 \xrightarrow{*} \config_2$ a "run", let $\ashadow : Q^2 \to \nats \cup \set{\bot}$ a "shadow", $\atrace$ a trace such that $\atrace(q_1, q_2) \geq \ashadow(q_1, q_2)$ for all $q_1, q_2$ such that $\ashadow(q_1, q_2) \in \nats$ and let $\Tilde{d} \in \Dataset$ such that $\config_1$ does not contain any agent with datum $\Tilde{d}$. 
 	
-	If there exists a datum $d$ such that $\shadow{\run}{d}=\ashadow$ then there exists a run $\Tilde{\run} : \Tilde{\config}_1 \xrightarrow{*} \Tilde{\config}_2$ such that
+	If there exists a datum $d$ such that $\shadow{\run}{d}=\ashadow$, then there exists a run $\Tilde{\run} : \Tilde{\config}_1 \xrightarrow{*} \Tilde{\config}_2$ such that
 	\begin{itemize}
-		\item $\shadow{\Tilde{\run}}{\Tilde{d}} = \ashadow$ and $\shadow{\Tilde{\run}}{d'} = \shadow{\Tilde{\run}}{d'}$ for all $d' \neq \Tilde{d}$.
+		\item $\shadow{\Tilde{\run}}{\Tilde{d}} = \ashadow$ and $\shadow{\run}{d'} = \shadow{\Tilde{\run}}{d'}$ for all $d' \neq \Tilde{d}$.
 		
-		\item $\trace{\run}{\Tilde{d}} = \atrace$ and $\trace{\run}{d'} = \trace{\Tilde{\run}}{d'}$ for all $d' \neq \Tilde{d}$.
+		\item $\trace{\Tilde{\run}}{\Tilde{d}} = \atrace$ and $\trace{\run}{d'} = \trace{\Tilde{\run}}{d'}$ for all $d' \neq \Tilde{d}$.
 	\end{itemize}
 \end{lemma}
 
 \begin{corollary}
 	\label{cor:run-few-observed-data-and-agents}
-	For all "run" $\run : \config_1 \xrightarrow{*} \config_2$, there exists a "run" $\Tilde{\run} : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$,at most $3\size{Q}^3$ agents with datum $d$ are "observed" in $\run$, and agents of at most $4(3\size{Q}^3+2)^{2\size{Q}^2}$ different data are "observed".
+	For every "run" $\run : \config_1 \xrightarrow{*} \config_2$, there exists a "run" $\Tilde{\run} : \config_1 \xrightarrow{*} \config_2$ such that for all $d \in \Dataset$, at most $3\size{Q}^3$ agents with datum $d$ are "observed" in $\Tilde{\run}$, and agents of at most $4(3\size{Q}^3+2)^{2\size{Q}^2}$ different data are "observed".
 \end{corollary}
 
 
