@@ -8,21 +8,23 @@
 	We say that $a_o$ is ""observed"" in $\run$ if it is either "internally" or "externally observed", and that a datum $d$ is observed if an agent $a$ with $\dataof(a) =d$ is. 
 \end{definition}
 \steffenin{Already used above. Move right before Definition 2?}
+\steffenin{Also define “only internally observed”?}
 
 \subsection{Bounds on the number of observed agents per datum}
 
 We call  ""trajectory"" of an agent $a$ in a run $\run=C_1 \xrightarrow{} C_2 \xrightarrow{} \ldots \xrightarrow{} C_n$ 
+\steffen{$\run = \config_1 \to \config_2 \to \dots \to \config_n$? Also $=$ vs $:$ and (nitpick) $\to$ vs $\xrightarrow{}$}%
 the sequence $q_1 \ldots q_n$ of states of $Q$ such that  $C_i(a)=q_i$ for all $i$.
 
 \begin{lemma}[Agents core lemma]
 	\label{lem:agents-core-lemma}
-	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run" with $\Agentset_{\run}$ the set of agents appearing in it. There exists a "run" $\run' : \config'_1 \xrightarrow{*} \config'_2$ over a subset of agents $\Agentset_{\run'} \subseteq \Agentset_{\run}$ such that:
+	Let $\run : \config_1 \xrightarrow{*} \config_2$ be a "run" with $\Agentset_{\run}$ the set of agents appearing in it. There exists a "run" $\run' : \config'_1 \xrightarrow{*} \config'_2$ over a subset of agents $\Agentset_{\run'} \subseteq \Agentset_{\run}$ such that
 	\begin{itemize}
-		\item for all $a \in \Agentset_{\run'}$, $\config_1(a) = \config'_1(a)$ and $\config_2(a) = \config'_2(a)$,
+		\item for all $a \in \Agentset_{\run'}$, $\config_1(a) = \config'_1(a)$ and $\config_2(a) = \config'_2(a)$;
 		
-		\item and for all $d \in \Dataset$, $q_1, q_2 \in Q$, if there exists an agent in $\Agentset_{\run}$ such that $\config_1(a) = (q_1, d)$ and $\config_2(a) = (q_2, d)$ then there is such an agent in $\Agentset_{\run'}$.
+		\item for all $d \in \Dataset$ and $q_1, q_2 \in Q$, if there exists an agent $a \in \Agentset_{\run}$ such that $\config_1(a) = (q_1, d)$\steffen{as above, $\config_1(a) = q_1$ and $\dataof(a) = d$?} and $\config_2(a) = (q_2, d)$, then there also exists such an agent in $\Agentset_{\run'}$\steffen{be more precise?}; and
 		
-		\item For all $d \in \Dataset$, there are at most $\size{Q}^3$ agents with datum $d$ in $\Agentset_{\run'}$.
+		\item for all $d \in \Dataset$, there are at most $\size{Q}^3$ agents with datum $d$ in $\Agentset_{\run'}$.
 		%\cortoin{we can achieve $\size{Q}^3$ but I think it makes the proof a little more technical}
 	\end{itemize}
 \end{lemma}
